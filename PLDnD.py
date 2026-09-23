@@ -31,7 +31,7 @@ def main(window: curses.window):
     window.addstr(3, pos_mid - 6, "|'|  `  |'|")
     window.addstr(4, pos_mid - 6, "| | /^\ | |")
     window.addstr(5, pos_mid - 6, "|_|_|_|_|_|")
-    window.addstr(7, pos_mid - 10, "Welcome to PLDnd!!!")
+    window.addstr(7, pos_mid - 10, "Welcome to PLDnD!!!")
 
     char_table = window.derwin(6, 72, 9, 2 + 7)
     char_table.box()
