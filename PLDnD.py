@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 
 import curses
+import characters
+
 
 def main(window: curses.window):
 
@@ -23,19 +25,20 @@ def main(window: curses.window):
     window.attrset(curses.color_pair(1))
     window.box()
     window.attrset(curses.color_pair(1))
-    window.addstr(1,2," _   |~  _ ")
-    window.addstr(2,2,"[_]--'--[_]")
-    window.addstr(3,2,"|'|  `  |'|")
-    window.addstr(4,2,"| | /^\ | |")
-    window.addstr(5,2,"|_|_|I|_|_|")
+    window.addstr(1, 2, " _   |~  _ ")
+    window.addstr(2, 2, "[_]--'--[_]")
+    window.addstr(3, 2, "|'|  `  |'|")
+    window.addstr(4, 2, "| | /^\ | |")
+    window.addstr(5, 2, "|_|_|I|_|_|")
     window.addstr(7, 2, "Welcome to PLDnd!!!")
 
-    char_table = window.derwin(10,10,9,2)
+    char_table = window.derwin(10, 10, 9, 2)
     char_table.box()
+    char_table.addstr(1, 2, "{}".format(characters.Fighter.name))
 
-    while 1: # Loop so the game doesn't exit instantly
-        window.refresh() # Refresh
+    while 1:  # Loop so the game doesn't exit instantly
+        window.refresh()  # Refresh
+
 
 if __name__ == '__main__':
-    curses.wrapper(main) # Initialise and return the window to main()
-
+    curses.wrapper(main)  # Initialise and return the window to main()
