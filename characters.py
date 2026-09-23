@@ -10,5 +10,5 @@ class Characters:
         self.attack = attack
         self.dmg = dmg
 
-Fighter = Characters("Jeff", "Player", "Fighter", 10, 12, 18, 10)
-Goblin = Characters("Boggard", "Enemy", "Goblin", 8, 15, 17, 7)
+fighter = Characters("Jeff", "Player", "Fighter", 10, 12, 18, 10)
+goblin = Characters("Boggard", "Enemy", "Goblin", 8, 15, 17, 7)
