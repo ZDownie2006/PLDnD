@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 
-import random
-
 
 class Characters:
     def __init__(self, name, role, role_type, hp, ac, at_mod, dmg, initiative):
