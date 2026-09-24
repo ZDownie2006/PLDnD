@@ -3,6 +3,7 @@
 import curses
 import characters
 
+
 def main(window: curses.window):
 
     window.keypad(True)
@@ -30,7 +31,7 @@ def main(window: curses.window):
     window.addstr(5, pos_mid - 6, "|_|_|_|_|_|")
     window.addstr(7, pos_mid - 10, "Welcome to PLDnD!!!")
 
-    char_table = window.derwin(6, 72, 9, pos_mid - 36)
+    char_table = window.derwin(6, 72, 9, 2 + 7)
     char_table.box()
     char_table.addstr(1, 2, "Name")
     char_table.addstr(1, 12, "Role")
@@ -59,6 +60,7 @@ def main(window: curses.window):
         c = window.get_wch()
         if c == 'x':
             break
+
 
 if __name__ == '__main__':
     curses.wrapper(main)  # Initialise and return the window to main()
