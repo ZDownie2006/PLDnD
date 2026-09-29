@@ -5,14 +5,14 @@ import random
 
 class Characters:
     def __init__(self, name, role, role_type, hp, ac, at_mod, dmg, initiative):
-        self.name = name
-        self.role = role
-        self.role_type = role_type
+        self.__name = name
+        self.__role = role
+        self.__role_type = role_type
         self.hp = hp
-        self.ac = ac
-        self.at_mod = at_mod
-        self.dmg = dmg
-        self.initiative = initiative
+        self.__ac = ac
+        self.__at_mod = at_mod
+        self.__dmg = dmg
+        self.__initiative = initiative
 
     @property
     def name(self) -> str:
@@ -37,14 +37,6 @@ class Characters:
     @role_type.setter
     def role_type(self, role_type: str) -> str:
         self.__role_type = role_type
-
-    @property
-    def hp(self) -> int:
-        return self.__hp
-
-    @hp.setter
-    def hp(self, hp: int) -> int:
-        self.__hp = hp
 
     @property
     def ac(self) -> int:
