@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
 import curses
-import characters
 import menu
+
 
 def main(window: curses.window):
 
