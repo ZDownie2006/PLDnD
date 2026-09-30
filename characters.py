@@ -1,18 +1,20 @@
 #!/usr/bin/env python3
 
-import random
-
 
 class Characters:
-    def __init__(self, name, role, role_type, hp, ac, at_mod, dmg, initiative):
-        self.__name = name
-        self.__role = role
-        self.__role_type = role_type
+    def __init__(
+        self, name, role, role_type, max_hp, hp, cur_ac, ac, at_mod, dmg, initiative
+    ):
+        self.name = name
+        self.role = role
+        self.role_type = role_type
+        self.max_hp = max_hp
         self.hp = hp
-        self.__ac = ac
-        self.__at_mod = at_mod
-        self.__dmg = dmg
-        self.__initiative = initiative
+        self.cur_ac = cur_ac
+        self.ac = ac
+        self.at_mod = at_mod
+        self.dmg = dmg
+        self.initiative = initiative
 
     @property
     def name(self) -> str:
@@ -39,14 +41,6 @@ class Characters:
         self.__role_type = role_type
 
     @property
-    def ac(self) -> int:
-        return self.__ac
-
-    @ac.setter
-    def ac(self, ac: int) -> int:
-        self.__ac = ac
-
-    @property
     def at_mod(self) -> int:
         return self.__at_mod
 
@@ -71,5 +65,5 @@ class Characters:
         self.__initiative = initiative
 
 
-fighter = Characters("Steve", "Fighter", "Player", 10, 12, 5, 10, 0)
-goblin = Characters("Boggard", "Goblin", "Enemy", 8, 15, 4, 7, 0)
+fighter = Characters("Steve", "Fighter", "Player", 10, 10, 12, 12, 5, 4, 0)
+goblin = Characters("Boggard", "Goblin", "Enemy", 8, 8, 15, 15, 4, 3, 0)
