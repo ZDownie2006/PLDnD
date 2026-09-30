@@ -2,6 +2,7 @@
 
 import curses
 import menu
+import sys
 
 
 def main(window: curses.window):
@@ -27,6 +28,10 @@ def main(window: curses.window):
         if c == 'x':
             break
 
-
 if __name__ == '__main__':
-    curses.wrapper(main)  # Initialise and return the window to main()
+    try:
+        curses.wrapper(main)  # Initialise and return the window to main()
+    except KeyboardInterrupt:
+        pass
+    finally:
+        sys.stderr.write('Thanks for playing PLDnD!\nSee you again soon!\n')

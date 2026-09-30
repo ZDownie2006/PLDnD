@@ -1,6 +1,7 @@
 import curses
 import characters
 
+
 def start(window: curses.window):
     window.box()
 
