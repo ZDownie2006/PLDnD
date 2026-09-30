@@ -28,3 +28,11 @@ def heal(current):
         print(f"{current.name} healed to full")
     elif current.hp >= current.max_hp:
         print(f"{current.name} is at full hp")
+
+
+def hp_check(current, target) -> bool:
+    if target.hp <= 0:
+        print(f"{target.name} has been defeated! {current.name} has Won!!!! OMGGGG")
+        return True
+    else:
+        return False
