@@ -27,10 +27,6 @@ def main(window: curses.window):
         c = window.get_wch()
         if c == 'x':
             break
-        elif c == 3:
-            break
-    sys.stderr.write('Interrupted\n')
-
 
 if __name__ == '__main__':
     try:
