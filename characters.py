@@ -65,5 +65,5 @@ class Characters:
         self.__initiative = initiative
 
 
-fighter = Characters("Steve", "Fighter", "Player", 10, 10, 14, 14, 5, 4, 0)
-goblin = Characters("Boggard", "Goblin", "Enemy", 8, 8, 15, 15, 4, 3, 0)
+fighter = Characters("Steve", "Fighter", "Player", 15, 15, 14, 14, 3, 6, 0)
+goblin = Characters("Boggard", "Goblin", "Enemy", 12, 12, 14, 14, 5, 2, 0)
