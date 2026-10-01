@@ -3,16 +3,21 @@ import characters
 
 
 def start(window: curses.window):
-    window.box()
 
     pos_mid = int(curses.COLS / 2)
-    window.addstr(1, pos_mid - 6, " _   |~  _ ")
-    window.addstr(2, pos_mid - 6, "[_]--'--[_]")
-    window.addstr(3, pos_mid - 6, "|'|  `  |'|")
-    window.addstr(4, pos_mid - 6, "| | /^\\ | |")
-    window.addstr(5, pos_mid - 6, "|_|_|_|_|_|")
-    window.addstr(7, pos_mid - 10, "Welcome to PLDnD!!!")
+    start_menu = window.derwin(curses.LINES, curses.COLS, 0, 0)
+    start_menu.addstr(1, pos_mid - 6, " _   |~  _ ")
+    start_menu.addstr(2, pos_mid - 6, "[_]--'--[_]")
+    start_menu.addstr(3, pos_mid - 6, "|'|  `  |'|")
+    start_menu.addstr(4, pos_mid - 6, "| | /^\\ | |")
+    start_menu.addstr(5, pos_mid - 6, "|_|_|_|_|_|")
+    start_menu.addstr(7, pos_mid - 10, "Welcome to PLDnD!!!")
 
+    window.refresh()
+
+def set_char_stat(window: curses.window):
+
+    pos_mid = int(curses.COLS / 2)
     char_table = window.derwin(6, 72, 9, pos_mid - 36)
     char_table.box()
     char_table.addstr(1, 2, "Name")
@@ -36,5 +41,3 @@ def start(window: curses.window):
     char_table.addstr(4, 42, "{}".format(characters.goblin.ac))
     char_table.addstr(4, 52, "+" + "{}".format(characters.goblin.at_mod))
     char_table.addstr(4, 62, "{}".format(characters.goblin.dmg))
-
-    window.refresh()
