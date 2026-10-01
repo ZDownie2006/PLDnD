@@ -17,6 +17,8 @@ def start(window: curses.window):
 
 def set_char_stat(window: curses.window):
 
+    window.clear()
+
     pos_mid = int(curses.COLS / 2)
     char_table = window.derwin(6, 72, 9, pos_mid - 36)
     char_table.box()
@@ -41,3 +43,5 @@ def set_char_stat(window: curses.window):
     char_table.addstr(4, 42, "{}".format(characters.goblin.ac))
     char_table.addstr(4, 52, "+" + "{}".format(characters.goblin.at_mod))
     char_table.addstr(4, 62, "{}".format(characters.goblin.dmg))
+
+    window.refresh()

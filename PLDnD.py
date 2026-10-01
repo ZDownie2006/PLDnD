@@ -3,7 +3,6 @@
 import curses
 import menu
 import sys
-import time
 
 
 def main(window: curses.window):
@@ -29,9 +28,7 @@ def main(window: curses.window):
         if c == 'x':
             break
         elif c == ' ':
-            window.clear()
             menu.set_char_stat(window)
-            window.refresh()
             c = window.get_wch()
             break
 
