@@ -27,6 +27,10 @@ def main(window: curses.window):
         c = window.get_wch()
         if c == 'x':
             break
+        elif c == ' ':
+            menu.set_char_stat(window)
+            c = window.get_wch()
+            break
 
 if __name__ == '__main__':
     try:
