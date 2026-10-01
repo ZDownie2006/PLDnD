@@ -2,6 +2,7 @@
 
 import curses
 import menu
+import combat_front
 import sys
 
 
@@ -27,6 +28,8 @@ def main(window: curses.window):
         c = window.get_wch()
         if c == 'x':
             break
+        if c == 'c':
+            combat_front.fight_vis(window)
 
 if __name__ == '__main__':
     try:

@@ -1,37 +1,46 @@
 #!/usr/bin/env python3
 
 import curses
+import time
+import combat_back
+import characters
 import sys
 
+def attack_vis(window: curses.window, player_pos):
+    window.addstr(player_pos[0] + 1, player_pos[1] - (len("ATTACK!")//2), "ATTACK!")
+    window.refresh()
+    time.sleep(1)
+    window.addstr(player_pos[0] + 1, player_pos[1] - (len("ATTACK!")//2), "       ")
 
-def main(window: curses.window):
-    window.keypad(True)  # Turn on keypad mode
-    curses.noecho()  # Turn off key echoing
-    curses.curs_set(0)  # Set cursor visibility
-    curses.cbreak()  # Turn off buffered input
+def dodge_vis(window: curses.window, player_pos):
+    window.addstr(player_pos[0] + 1, player_pos[1] - (len("HEALING UP!")//2), "HEALING UP!")
+    window.refresh()
+    time.sleep(1)
+    window.addstr(player_pos[0] + 1, player_pos[1] - (len("ATTACK!")//2), "       ")
 
-    if curses.has_colors():
-        curses.start_color()
-        curses.use_default_colors()
+def heal_vis():
+    pass
 
-    curses.init_pair(1, curses.COLOR_WHITE, -1)
+def hp_check_vis():
+    pass
 
-    window = curses.newwin(curses.LINES, curses.COLS, 0, 0)
-    window.attrset(curses.color_pair(1))
+def fight_vis(window: curses.window):
+    window.clear()
     window.box()
 
     # Create Sprites
-    window.addstr((curses.LINES // 4), (curses.COLS // 2), "😈")
-    window.addstr((curses.LINES // 2), (curses.COLS // 2), "🤺")
+    player_pos = (int(curses.LINES * 0.5), int(curses.COLS * 0.25))
+    enemy_pos = (int(curses.LINES * 0.5), int(curses.COLS * 0.75))
+    window.addstr(enemy_pos[0], enemy_pos[1], "😈")
+    window.addstr(player_pos[0], player_pos[1], "😎")
 
-    while 1:  # Loop so the game doesn't exit instantly
+    while (True):
+        action = window.get_wch()
+        if action == "1":
+            attack_vis(window, player_pos)
+        elif action == "2":
+            dodge_vis(window)
+        elif action == "3":
+            heal_vis(window)
+
         window.refresh()  # Refresh
-
-
-if __name__ == "__main__":
-    try:
-        curses.wrapper(main)  # Initialise and return the window to main()
-    except KeyboardInterrupt:
-        pass
-    finally:
-        sys.stderr.write('Thanks for fighting in PLDnD!\nSee you again soon!\n')
