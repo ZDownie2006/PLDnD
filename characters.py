@@ -16,6 +16,9 @@ class Characters:
         self.dmg = dmg
         self.initiative = initiative
 
+        def __str__(self):
+            print(self.name)
+
     @property
     def name(self) -> str:
         return self.__name
@@ -66,4 +69,6 @@ class Characters:
 
 
 fighter = Characters("Steve", "Fighter", "Player", 15, 15, 14, 14, 3, 6, 0)
+mage = Characters("Gandalf", "Mage", "Player", 10, 10, 12, 12, 6, 6, 0)
 goblin = Characters("Boggard", "Goblin", "Enemy", 12, 12, 14, 14, 5, 2, 0)
+demon = Characters("Asmodeus", "Demon", "Enemy", 15, 15, 12, 12, 4, 4, 0)
