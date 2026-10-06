@@ -7,7 +7,9 @@ def player_list(initiative_list):
     plist = []
     idx = 0
     for idx in range(len(initiative_list)):
-        if (initiative_list[idx].role_type) == "Player":
+        if (initiative_list[idx].role_type) == "Player" and (
+            initiative_list[idx].is_alive
+        ) == True:
             plist.append(initiative_list[idx])
         elif (initiative_list[idx].role_type) == "Enemy":
             continue
@@ -18,7 +20,9 @@ def enemy_list(initiative_list):
     elist = []
     idx = 0
     for idx in range(len(initiative_list)):
-        if (initiative_list[idx].role_type) == "Enemy":
+        if (initiative_list[idx].role_type) == "Enemy" and (
+            initiative_list[idx].is_alive
+        ) == True:
             elist.append(initiative_list[idx])
         elif (initiative_list[idx].role_type) == "Player":
             continue
@@ -53,9 +57,9 @@ def heal(current):
         print(f"{current.name} is at full hp")
 
 
-def hp_check(current, target) -> bool:
+def hp_check(target) -> bool:
     if target.hp <= 0:
-        print(f"{target.name} has been defeated! {current.name} has Won!!!! OMGGGG")
+        print(f"{target.name} has been defeated!")
         return True
     else:
         return False
