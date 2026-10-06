@@ -3,9 +3,32 @@
 from random import randint
 
 
+def player_list(initiative_list):
+    plist = []
+    idx = 0
+    for idx in range(len(initiative_list)):
+        if (initiative_list[idx].role_type) == "Player":
+            plist.append(initiative_list[idx])
+        elif (initiative_list[idx].role_type) == "Enemy":
+            continue
+    return plist
+
+
+def enemy_list(initiative_list):
+    elist = []
+    idx = 0
+    for idx in range(len(initiative_list)):
+        if (initiative_list[idx].role_type) == "Enemy":
+            elist.append(initiative_list[idx])
+        elif (initiative_list[idx].role_type) == "Player":
+            continue
+
+    return elist
+
+
 def attack(attacker, target):
     hit = randint(1, 20) + (attacker.at_mod)
-    print(f"{(attacker).name} attacks with a {hit}")
+    print(f"{(attacker).name} attacks {(target).name} with a {hit}")
     if hit >= (target.cur_ac):
         print(f"{attacker.name} hits! dealing {attacker.dmg} damage to {target.name}!")
         (target).hp = (target.hp) - (attacker.dmg)

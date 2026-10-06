@@ -28,8 +28,12 @@ def main(window: curses.window):
         c = window.get_wch()
         if c == 'x':
             break
-        if c == 'c':
+        elif c == 'c':
             combat_front.fight_vis(window)
+        elif c == ' ':
+            menu.set_char_stat(window)
+            c = window.get_wch()
+            break
 
 if __name__ == '__main__':
     try:

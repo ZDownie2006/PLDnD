@@ -3,18 +3,23 @@
 import characters
 from random import randint
 import time
-from combat_back import attack, dodge, heal, hp_check
+from combat_back import attack, dodge, heal, hp_check, player_list, enemy_list
 
 
 def combat():
-    initiative_list = [characters.fighter, characters.goblin]
+    initiative_list = [
+        characters.fighter,
+        characters.goblin,
+        characters.demon,
+        characters.mage,
+    ]
+    plist = player_list(initiative_list)
+    elist = enemy_list(initiative_list)
     while True:
 
         for i in range(len(initiative_list)):
             initiative_list[i].cur_ac = initiative_list[i].ac
             current = initiative_list[i]
-            # the use of -1 is to target the previous character, i.e goblin attacking fighter or vice versa
-            target = initiative_list[i - 1]
             if (current.role_type) == "Player":
                 print(f"{current.name}: {current.hp} / {current.max_hp}")
                 move = int(
@@ -25,6 +30,15 @@ def combat():
             else:
                 move = randint(1, 3)
             if move == 1:
+                if (current.role_type) == "Player":
+                    print("Choose your target: ", end='')
+                    for idx, enemy in enumerate(elist):
+                        print(idx, enemy.name, end=' ')
+                    print('')
+                    target = elist[int(input())]
+                else:
+                    idx = randint(0, (len(plist) - 1))
+                    target = plist[idx]
                 attack(current, target)
                 if hp_check(current, target):
                     break
@@ -38,7 +52,7 @@ def combat():
                 print("please choose a value input")
                 move = input()
 
-            time.sleep(2)
+            time.sleep(0.5)
 
         if current.hp <= 0 or target.hp <= 0:
             break
