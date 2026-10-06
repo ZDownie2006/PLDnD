@@ -13,13 +13,14 @@ def combat():
         characters.demon,
         characters.mage,
     ]
-    plist = player_list(initiative_list)
-    elist = enemy_list(initiative_list)
-    while True:
+    game_state = True
+    while game_state == True:
+        plist = player_list(initiative_list)
+        elist = enemy_list(initiative_list)
 
-        for i in range(len(initiative_list)):
-            initiative_list[i].cur_ac = initiative_list[i].ac
-            current = initiative_list[i]
+        for character in initiative_list:
+            character.cur_ac = character.ac
+            current = character
             if (current.role_type) == "Player":
                 print(f"{current.name}: {current.hp} / {current.max_hp}")
                 move = int(
@@ -40,8 +41,21 @@ def combat():
                     idx = randint(0, (len(plist) - 1))
                     target = plist[idx]
                 attack(current, target)
-                if hp_check(current, target):
-                    break
+                if hp_check(target):
+                    target.is_alive = False
+                    initiative_list.remove(target)
+                    plist = player_list(initiative_list)
+                    elist = enemy_list(initiative_list)
+                    if plist and elist:
+                        continue
+                    elif plist and not elist:
+                        print("Players win")
+                        game_state = False
+                        break
+                    elif elist and not plist:
+                        print("Enemies Win")
+                        game_state = False
+                        break
             elif move == 2:
                 dodge(current)
             elif move == 3:
@@ -54,8 +68,6 @@ def combat():
 
             time.sleep(0.5)
 
-        if current.hp <= 0 or target.hp <= 0:
-            break
         if move == 0:
             break
 
