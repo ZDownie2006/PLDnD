@@ -59,5 +59,5 @@ def combat():
         if move == 0:
             break
 
-
-combat()
+if __name__ == "__main__":
+    combat()
