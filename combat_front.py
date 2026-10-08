@@ -2,7 +2,7 @@
 
 import curses
 import time
-import combat
+import combat_back
 import characters
 import sys
 
@@ -11,41 +11,30 @@ INITIATIVE_LIST = [
     characters.goblin,
 ]
 
+# Visuals on certain actions
+def action_text(text, position, window: curses.window):
+    window.addstr(position[0] + 1, position[1] - (len(text)//2), text)
+    window.refresh()
+    time.sleep(0.5)
+    window.addstr(position[0] + 1, position[1] - (len(text)//2), " " * len(text))
+
 def attack_vis(window: curses.window, player_pos, enemy_pos):
     characters.goblin.hp -= 3
-    window.addstr(player_pos[0] + 1, player_pos[1] - (len("ATTACK!")//2), "ATTACK!")
-    window.refresh()
-    time.sleep(1)
-    window.addstr(player_pos[0] + 1, player_pos[1] - (len("ATTACK!")//2), "       ")
-    window.addstr(enemy_pos[0] + 1, enemy_pos[1] - (len("OW!")//2), "OW!")
-    window.refresh()
-    time.sleep(1)
-    window.addstr(enemy_pos[0] + 1, enemy_pos[1] - (len("OW!")//2), "   ")
+    action_text("ATTACK!", player_pos, window)
+    action_text("OW!", enemy_pos, window)
     if characters.goblin.hp <= 0:
-        window.addstr(enemy_pos[0] + 1, enemy_pos[1] - (len("ARGHHH!")//2), "ARGHHH!")
-        window.refresh()
-        time.sleep(1)
-        window.addstr(enemy_pos[0] + 1, enemy_pos[1] - (len("ARGHHH!")//2), "       ")
+        action_text("ARGHHH!", enemy_pos, window)
         window.addstr(enemy_pos[0], enemy_pos[1], "💀")
         INITIATIVE_LIST.pop()
     elif characters.goblin.hp <= characters.goblin.max_hp // 2:
         window.addstr(enemy_pos[0], enemy_pos[1], "👿")
-        window.addstr(enemy_pos[0] + 1, enemy_pos[1] - (len("THAT HURTS!")//2), "THAT HURTS!")
-        window.refresh()
-        time.sleep(1)
-        window.addstr(enemy_pos[0] + 1, enemy_pos[1] - (len("THAT HURTS!")//2), "           ")
+        action_text("THAT HURTS!", enemy_pos, window)
 
 def dodge_vis(window: curses.window, player_pos):
-    window.addstr(player_pos[0] + 1, player_pos[1] - (len("LEAVE ME ALONE!")//2), "LEAVE ME ALONE!")
-    window.refresh()
-    time.sleep(1)
-    window.addstr(player_pos[0] + 1, player_pos[1] - (len("LEAVE ME ALONE!")//2), "               ")
+    action_text("LEAVE ME ALONE!", player_pos, window)
 
 def heal_vis(window: curses.window, player_pos):
-    window.addstr(player_pos[0] + 1, player_pos[1] - (len("HEALING UP!")//2), "HEALING UP!")
-    window.refresh()
-    time.sleep(1)
-    window.addstr(player_pos[0] + 1, player_pos[1] - (len("HEALING UP!")//2), "           ")
+    action_text("HEALING UP!", player_pos, window)
 
 def options_vis(window: curses.window):
     pos_quarter = int(curses.LINES * 0.75)
