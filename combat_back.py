@@ -32,12 +32,12 @@ def enemy_list(initiative_list):
 
 def attack(attacker, target):
     hit = randint(1, 20) + (attacker.at_mod)
-    print(f"{(attacker).name} attacks {(target).name} with a {hit}")
+    # print(f"{(attacker).name} attacks {(target).name} with a {hit}")
     if hit >= (target.cur_ac):
-        print(f"{attacker.name} hits! dealing {attacker.dmg} damage to {target.name}!")
+        # print(f"{attacker.name} hits! dealing {attacker.dmg} damage to {target.name}!")
         (target).hp = (target.hp) - (attacker.dmg)
-    else:
-        print(f"{attacker.name} Missed! Unfortunate")
+    # else:
+        # print(f"{attacker.name} Missed! Unfortunate")
 
 
 def dodge(current):
