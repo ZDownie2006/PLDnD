@@ -112,7 +112,7 @@ def fight_vis(window: curses.window):
             while action not in actions:
                 action = window.get_wch()
         else:
-            action = random.choices(actions, [0, 3, 0, 0], k=1)[0]
+            action = random.choices(actions, [0, 3, 2, 1], k=1)[0]
         target = INITIATIVE_LIST[0]
         action = int(action)
 
