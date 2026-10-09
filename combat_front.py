@@ -11,9 +11,6 @@ INITIATIVE_LIST = [
     characters.goblin,
 ]
 
-ENEMY_POSITIONS = {}
-PLAYER_POSITIONS = {}
-
 # Visuals on certain actions
 def action_text(text, position, window: curses.window, display_time=0.75):
     window.addstr(position[0] + 1, position[1] - (len(text)//2), text)
