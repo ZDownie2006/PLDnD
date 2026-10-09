@@ -23,11 +23,14 @@ def action_text(text, position, window: curses.window, display_time=0.75):
 
 def attack_vis(window: curses.window, attacker, target, player_list, enemy_list):
     old_health = target.hp
-    combat_back.attack(attacker, target)
+    roll = combat_back.attack(attacker, target)
     damage = old_health - target.hp
     centre = (int(curses.LINES * 0.5), int(curses.COLS * 0.5))
 
     action_text("ATTACK!", attacker.position, window, 1)
+    if attacker.role_type == "Player":
+        action_text(f"{attacker.name} rolled a {roll}", centre, window, 1)
+
     if damage == 0:
         action_text("HA! YOU MISSED!", target.position, window)
     else:
@@ -64,7 +67,8 @@ def heal_vis(window: curses.window, player):
             window.addstr(player.position[0], player.position[1], player.healthy_sprite)
         action_text("COOL AS A CUCUMBER!", player.position, window)
 
-
+# Creates and displays actions the player can take via a subwindow
+# Returns the subwindow
 def options_vis(window: curses.window, turn_string):
     pos_quarter = int(curses.LINES * 0.75)
     height = int(curses.LINES * 0.275)
@@ -83,6 +87,7 @@ def options_vis(window: curses.window, turn_string):
 
     return options
 
+# Creates a visual sprite for each character and places them evenly on the screen
 def create_sprites(window: curses.window, characters):
     party_size = len(characters)
     x_coordinate = int(curses.COLS * 0.25) if characters[0].role_type == "Player" else int(curses.COLS * 0.75)
@@ -91,8 +96,8 @@ def create_sprites(window: curses.window, characters):
         character.position = (y_coordinate, x_coordinate)
         window.addstr(character.position[0], character.position[1], character.healthy_sprite)
 
-def select_action(options: curses.window, window: curses.window):
-    window.keypad(True)
+# Allows player to choose an action via arrow keys
+def select_action(options: curses.window):
     options.keypad(True)
     key_press = ""
     i = 1
@@ -115,6 +120,7 @@ def select_action(options: curses.window, window: curses.window):
                 i -= 1
             case curses.KEY_RIGHT:
                 i += 1
+
         if i <= -1:
             i = 4
 
@@ -123,8 +129,10 @@ def select_action(options: curses.window, window: curses.window):
         options.addstr(int(height * 0.5), int(curses.COLS * centre) - 5, " ")
         options.addstr(int(height * 0.5) - 1, int(curses.COLS * centre) - 5, "           ")
 
+    options.refresh()    
     return i
 
+# Allows player to select a target via arrow keys
 def select_target(window: curses.window, enemy_list):
     window.keypad(True)
     key_press = ""
@@ -140,6 +148,9 @@ def select_target(window: curses.window, enemy_list):
         window.addstr(current_enemy.position[0], current_enemy.position[1] - 1, "|", red)
         window.addstr(current_enemy.position[0] - 1, current_enemy.position[1], "--", red)
 
+        attack_string = f"Attack {current_enemy.name}"
+        window.addstr(int(curses.LINES * 0.65), int((curses.COLS - len(attack_string)) * 0.5), attack_string, red)
+
         key_press = window.getch()
         match (key_press):
             case curses.KEY_UP:
@@ -151,6 +162,7 @@ def select_target(window: curses.window, enemy_list):
         window.addstr(current_enemy.position[0], current_enemy.position[1] + 1, " ")
         window.addstr(current_enemy.position[0], current_enemy.position[1] - 1, " ")
         window.addstr(current_enemy.position[0] - 1, current_enemy.position[1], "  ")
+        window.addstr(int(curses.LINES * 0.65), int((curses.COLS - len(attack_string)) * 0.5), " " * len(attack_string))
 
     return current_enemy
 
@@ -184,17 +196,15 @@ def fight_vis(window: curses.window):
         curses.flushinp()
 
         action = -1
-        actions = ["0", "1", "2", "3"]
+        actions = [0, 1, 2, 3]
         if active_character.role_type == "Player":
             while action not in actions:
-                # action = window.get_wch()
-                action = str(select_action(options_win, window))
-            if action == "1":
+                action = select_action(options_win)
+            if action == 1:
                 target = select_target(window, enemy_list)
         else:
             action = random.choices(actions, [0, 3, 2, 1], k=1)[0]
             target = random.choice(player_list)
-        action = int(action)
 
         match (action):
             case 1:
