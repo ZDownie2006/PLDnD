@@ -38,6 +38,7 @@ def attack(attacker, target):
         (target).hp = (target.hp) - (attacker.dmg)
     # else:
         # print(f"{attacker.name} Missed! Unfortunate")
+    return hit
 
 
 def dodge(current):
