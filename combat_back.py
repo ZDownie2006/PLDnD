@@ -42,18 +42,19 @@ def attack(attacker, target):
 
 def dodge(current):
     current.cur_ac = (current.ac) + 5
-    print(f"{current.name} prepares to dodge!, New AC {current.cur_ac}")
+    # print(f"{current.name} prepares to dodge!, New AC {current.cur_ac}")
 
 
 def heal(current):
     if current.hp < current.max_hp:
         heal = randint(1, 5)
         current.hp = current.hp + heal
-        print(f"{current.name} heals for {heal} hp!")
+        # print(f"{current.name} heals for {heal} hp!")
     if current.hp > current.max_hp:
         current.hp = current.max_hp
-        print(f"{current.name} healed to full")
+        # print(f"{current.name} healed to full")
     elif current.hp >= current.max_hp:
+        return
         print(f"{current.name} is at full hp")
 
 
