@@ -15,7 +15,7 @@ ENEMY_POSITIONS = {}
 PLAYER_POSITIONS = {}
 
 # Visuals on certain actions
-def action_text(text, position, window: curses.window, display_time=0.5):
+def action_text(text, position, window: curses.window, display_time=0.75):
     window.addstr(position[0] + 1, position[1] - (len(text)//2), text)
     window.refresh()
     time.sleep(display_time)
@@ -82,15 +82,22 @@ def fight_vis(window: curses.window):
         create_sprites(window, character)
 
     while (len(INITIATIVE_LIST) > 1):
+        window.refresh()
         active_character = INITIATIVE_LIST.pop(0)
-        action_text(f"{active_character.name}'s turn".upper(), (int(curses.LINES * 0.1), int(curses.COLS * 0.5)), window, 1.5)
+
+        new_window = window.derwin(1, curses.COLS - 2, int(curses.LINES * 0.8), 1)
+        turn_string = f"{active_character.name}'s turn".upper()
+        new_window.addstr(0, int((curses.COLS - len(turn_string)) * 0.5), turn_string)
+        new_window.refresh()
+        time.sleep(0.5)
+
         action = -1
         actions = ["0", "1", "2", "3"]
         if active_character.role_type == "Player":
             while action not in actions:
                 action = window.get_wch()
         else:
-            action = random.randint(1, 3)
+            action = random.choices(actions, [0, 3, 2, 1], k=1)[0]
         target = INITIATIVE_LIST[0]
         action = int(action)
 
@@ -106,6 +113,7 @@ def fight_vis(window: curses.window):
         
         window.refresh()  # Refresh
         INITIATIVE_LIST.append(active_character)
+        new_window.clear()
 
     window.addstr(int(curses.LINES * 0.4), int(curses.COLS * 0.5) - 4, f"{INITIATIVE_LIST[0].name} WINS!")
     window.addstr(int(curses.LINES * 0.5), int(curses.COLS * 0.5) - 10, "Press any key to exit")
