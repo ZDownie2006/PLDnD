@@ -72,14 +72,16 @@ def options_vis(window: curses.window, turn_string):
     options = window.derwin(height, width, pos_quarter, 0)
     options.box()
 
-    options.addstr(int(height * 0.5), int(curses.COLS * 0.20)-5, "1. ATTACK 🗡️")
-    options.addstr(int(height * 0.5), int(curses.COLS * 0.40)-5, "2. DODGE 💨")
-    options.addstr(int(height * 0.5), int(curses.COLS * 0.60)-3, "3. HEAL 💊")
-    options.addstr(int(height * 0.5), int(curses.COLS * 0.80)-3, "0. QUIT 😰")
+    options.addstr(int(height * 0.5), int(curses.COLS * 0.20)-4, "ATTACK 🗡️")
+    options.addstr(int(height * 0.5), int(curses.COLS * 0.40)-4, "DODGE 💨")
+    options.addstr(int(height * 0.5), int(curses.COLS * 0.60)-3, "HEAL 💊")
+    options.addstr(int(height * 0.5), int(curses.COLS * 0.80)-3, "QUIT 😰")
 
     options.addstr(0, int((width - len(turn_string)) * 0.5), turn_string)
 
     options.refresh()
+
+    return options
 
 def create_sprites(window: curses.window, characters):
     party_size = len(characters)
@@ -89,6 +91,40 @@ def create_sprites(window: curses.window, characters):
         character.position = (y_coordinate, x_coordinate)
         window.addstr(character.position[0], character.position[1], character.healthy_sprite)
 
+def select_action(options: curses.window, window: curses.window):
+    window.keypad(True)
+    options.keypad(True)
+    key_press = ""
+    i = 1
+    while key_press not in (curses.KEY_ENTER, 10, 13):
+        centres = [0.80, 0.20, 0.40, 0.60]
+        centre = centres[abs(i) % 4]
+        height = int(curses.LINES * 0.275)
+
+        # Make a box
+        curses.init_pair(3, curses.COLOR_BLUE, -1)
+        blue = curses.color_pair(3)
+        options.addstr(int(height * 0.5) + 1, int(curses.COLS * centre - 5), "-----------", blue)
+        options.addstr(int(height * 0.5), int(curses.COLS * centre) + 5, "⎪", blue)
+        options.addstr(int(height * 0.5), int(curses.COLS * centre) - 5, "⎪", blue)
+        options.addstr(int(height * 0.5) - 1, int(curses.COLS * centre) - 5, "-----------", blue)
+
+        key_press = options.getch()
+        match (key_press):
+            case curses.KEY_LEFT:
+                i -= 1
+            case curses.KEY_RIGHT:
+                i += 1
+        if i <= -1:
+            i = 4
+
+        options.addstr(int(height * 0.5) + 1, int(curses.COLS * centre) - 5, "           ")
+        options.addstr(int(height * 0.5), int(curses.COLS * centre) + 5, " ")
+        options.addstr(int(height * 0.5), int(curses.COLS * centre) - 5, " ")
+        options.addstr(int(height * 0.5) - 1, int(curses.COLS * centre) - 5, "           ")
+
+    return i
+
 def select_target(window: curses.window, enemy_list):
     window.keypad(True)
     key_press = ""
@@ -97,10 +133,12 @@ def select_target(window: curses.window, enemy_list):
         current_enemy = enemy_list[abs(i) % len(enemy_list)]
         
         # Make a box
-        window.addstr(current_enemy.position[0] + 1, current_enemy.position[1], "--")
-        window.addstr(current_enemy.position[0], current_enemy.position[1] + 1, "|")
-        window.addstr(current_enemy.position[0], current_enemy.position[1] - 1, "|")
-        window.addstr(current_enemy.position[0] - 1, current_enemy.position[1], "--")
+        curses.init_pair(2, curses.COLOR_RED, -1)
+        red = curses.color_pair(2)
+        window.addstr(current_enemy.position[0] + 1, current_enemy.position[1], "--", red)
+        window.addstr(current_enemy.position[0], current_enemy.position[1] + 1, "|", red)
+        window.addstr(current_enemy.position[0], current_enemy.position[1] - 1, "|", red)
+        window.addstr(current_enemy.position[0] - 1, current_enemy.position[1], "--", red)
 
         key_press = window.getch()
         match (key_press):
@@ -138,7 +176,7 @@ def fight_vis(window: curses.window):
         turn_string = f"{active_character.name}'s turn".upper()
 
         # Update Options Window
-        options_vis(window, turn_string)
+        options_win = options_vis(window, turn_string)
         
         time.sleep(0.5)
 
@@ -149,7 +187,8 @@ def fight_vis(window: curses.window):
         actions = ["0", "1", "2", "3"]
         if active_character.role_type == "Player":
             while action not in actions:
-                action = window.get_wch()
+                # action = window.get_wch()
+                action = str(select_action(options_win, window))
             if action == "1":
                 target = select_target(window, enemy_list)
         else:
