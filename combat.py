@@ -46,13 +46,11 @@ def combat():
                     initiative_list.remove(target)
                     plist = player_list(initiative_list)
                     elist = enemy_list(initiative_list)
-                    if plist and elist:
-                        continue
-                    elif plist and not elist:
+                    if plist and not elist:
                         print("Players win")
                         game_state = False
                         break
-                    elif elist and not plist:
+                    if elist and not plist:
                         print("Enemies Win")
                         game_state = False
                         break

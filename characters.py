@@ -15,6 +15,7 @@ class Characters:
         dmg,
         initiative,
         is_alive,
+        position
     ):
         self.name = name
         self.role = role
@@ -27,6 +28,7 @@ class Characters:
         self.dmg = dmg
         self.initiative = initiative
         self.is_alive = is_alive
+        self.position = position
 
         def __str__(self):
             print(self.name)
@@ -80,7 +82,7 @@ class Characters:
         self.__initiative = initiative
 
 
-fighter = Characters("Steve", "Fighter", "Player", 15, 15, 14, 14, 3, 6, 0, True)
-mage = Characters("Gandalf", "Mage", "Player", 10, 10, 12, 12, 6, 6, 0, True)
-goblin = Characters("Boggard", "Goblin", "Enemy", 12, 12, 14, 14, 5, 2, 0, True)
-demon = Characters("Asmodeus", "Demon", "Enemy", 15, 15, 12, 12, 4, 4, 0, True)
+fighter = Characters("Steve", "Fighter", "Player", 15, 15, 14, 14, 3, 6, 0, True, ())
+mage = Characters("Gandalf", "Mage", "Player", 10, 10, 12, 12, 6, 6, 0, True, ())
+goblin = Characters("Boggard", "Goblin", "Enemy", 12, 12, 14, 14, 5, 2, 0, True, ())
+demon = Characters("Asmodeus", "Demon", "Enemy", 15, 15, 12, 12, 4, 4, 0, True, ())
