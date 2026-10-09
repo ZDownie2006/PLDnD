@@ -36,12 +36,17 @@ def combat():
                 move = randint(1, 3)
             match move:
                 case 1:
+                    target = None
                     if (current.role_type) == "Player":
                         print("Choose your target: ", end='')
                         for idx, enemy in enumerate(elist):
                             print(idx, enemy.name, end=' ')
                         print('')
-                        target = elist[int(input())]
+                        while target == None:
+                            try:
+                                target = elist[int(input())]
+                            except IndexError, ValueError:
+                                print("invalid option")
                     else:
                         idx = randint(0, (len(plist) - 1))
                         target = plist[idx]
@@ -51,13 +56,11 @@ def combat():
                         initiative_list.remove(target)
                         plist = player_list(initiative_list)
                         elist = enemy_list(initiative_list)
-                        if plist and elist:
-                            continue
-                        elif plist and not elist:
+                        if plist and not elist:
                             print("Players win")
                             game_state = False
                             break
-                        elif elist and not plist:
+                        if elist and not plist:
                             print("Enemies Win")
                             game_state = False
                             break
