@@ -15,6 +15,7 @@ class Characters:
         dmg,
         initiative,
         is_alive,
+        position=()
     ):
         self.name = name
         self.role = role
@@ -27,6 +28,7 @@ class Characters:
         self.dmg = dmg
         self.initiative = initiative
         self.is_alive = is_alive
+        self.position = position
 
         def __str__(self):
             print(self.name)
