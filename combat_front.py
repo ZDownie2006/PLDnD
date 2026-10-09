@@ -4,12 +4,15 @@ import curses
 import time
 import combat_back
 import characters
-import sys
+import random
 
 INITIATIVE_LIST = [
     characters.fighter,
     characters.goblin,
 ]
+
+ENEMY_POSITIONS = {}
+PLAYER_POSITIONS = {}
 
 # Visuals on certain actions
 def action_text(text, position, window: curses.window, display_time=0.5):
@@ -18,33 +21,36 @@ def action_text(text, position, window: curses.window, display_time=0.5):
     time.sleep(display_time)
     window.addstr(position[0] + 1, position[1] - (len(text)//2), " " * len(text))
 
-def attack_vis(window: curses.window, player_pos, enemy_pos):
-    old_health = characters.goblin.hp
-    combat_back.attack(characters.fighter, characters.goblin)
-    damage = old_health - characters.goblin.hp
+def attack_vis(window: curses.window, attacker, target):
+    old_health = target.hp
+    combat_back.attack(attacker, target)
+    damage = old_health - target.hp
     centre = (int(curses.LINES * 0.5), int(curses.COLS * 0.5))
 
-    action_text("ATTACK!", player_pos, window)
+    action_text("ATTACK!", attacker.position, window, 1)
     if damage == 0:
-        action_text("HA! YOU MISSED!", enemy_pos, window)
+        action_text("HA! YOU MISSED!", target.position, window)
     else:
-        action_text("OW!", enemy_pos, window)
+        action_text("OW!", target.position, window)
 
-    if characters.goblin.hp <= 0:
-        action_text("ARGHHH!", enemy_pos, window)
-        window.addstr(enemy_pos[0], enemy_pos[1], "💀")
+    if target.hp <= 0:
+        action_text("ARGHHH!", target.position, window, 1)
+        window.addstr(target.position[0], target.position[1], "💀")
         INITIATIVE_LIST.pop()
-    elif characters.goblin.hp <= characters.goblin.max_hp // 2 and old_health > characters.goblin.max_hp:
-        window.addstr(enemy_pos[0], enemy_pos[1], "👿")
-        action_text("THAT HURTS!", enemy_pos, window)
+    elif target.hp <= target.max_hp // 2 and old_health > target.max_hp // 2:
+        if target.role_type == "Enemy":
+            window.addstr(target.position[0], target.position[1], "👿")
+        else:
+            window.addstr(target.position[0], target.position[1], "🤕")
+        action_text("THAT HURTS!", target.position, window)
         
-    action_text(f"{characters.fighter.name} did {damage} damage to {characters.goblin.name}", centre, window, 2)
+    action_text(f"{attacker.name} did {damage} damage to {target.name}", centre, window, 1)
 
-def dodge_vis(window: curses.window, player_pos):
-    action_text("LEAVE ME ALONE!", player_pos, window)
+def dodge_vis(window: curses.window, player):
+    action_text("LEAVE ME ALONE!", player.position, window)
 
-def heal_vis(window: curses.window, player_pos):
-    action_text("HEALING UP!", player_pos, window)
+def heal_vis(window: curses.window, player):
+    action_text("HEALING UP!", player.position, window)
 
 def options_vis(window: curses.window):
     pos_quarter = int(curses.LINES * 0.75)
@@ -56,6 +62,14 @@ def options_vis(window: curses.window):
     options.addstr(4, int(curses.COLS * 0.60)-3, "3. HEAL 🧪")
     options.addstr(4, int(curses.COLS * 0.80)-3, "0. QUIT 💨")
 
+def create_sprites(window: curses.window, character):
+    if character.role_type == "Player":
+        character.position = (int(curses.LINES * 0.4), int(curses.COLS * 0.25))
+        window.addstr(character.position[0], character.position[1], "😎")
+    elif character.role_type == "Enemy":
+        character.position = (int(curses.LINES * 0.4), int(curses.COLS * 0.75))
+        window.addstr(character.position[0], character.position[1], "😈")
+
 def fight_vis(window: curses.window):
     window.clear()
     window.border("|", "|", "-", 0, "+", "+")
@@ -64,26 +78,35 @@ def fight_vis(window: curses.window):
     options_vis(window)
 
     # Create Sprites
-    player_pos = (int(curses.LINES * 0.4), int(curses.COLS * 0.25))
-    enemy_pos = (int(curses.LINES * 0.4), int(curses.COLS * 0.75))
-    window.addstr(enemy_pos[0], enemy_pos[1], "😈")
-    window.addstr(player_pos[0], player_pos[1], "😎")
-
+    for character in INITIATIVE_LIST:
+        create_sprites(window, character)
 
     while (len(INITIATIVE_LIST) > 1):
-        action = window.get_wch()
+        active_character = INITIATIVE_LIST.pop(0)
+        action_text(f"{active_character.name}'s turn".upper(), (int(curses.LINES * 0.1), int(curses.COLS * 0.5)), window, 1.5)
+        action = -1
+        actions = ["0", "1", "2", "3"]
+        if active_character.role_type == "Player":
+            while action not in actions:
+                action = window.get_wch()
+        else:
+            action = random.randint(1, 3)
+        target = INITIATIVE_LIST[0]
+        action = int(action)
+
         match (action):
-            case "1":
-                attack_vis(window, player_pos, enemy_pos)
-            case "2":
-                dodge_vis(window, player_pos)
-            case "3":
-                heal_vis(window, player_pos)
-            case "0":
+            case 1:
+                attack_vis(window, active_character, target)
+            case 2:
+                dodge_vis(window, active_character)
+            case 3:
+                heal_vis(window, active_character)
+            case 0:
                 return
         
         window.refresh()  # Refresh
+        INITIATIVE_LIST.append(active_character)
 
-    window.addstr(int(curses.LINES * 0.4), int(curses.COLS * 0.5) - 4, "YOU WIN!")
+    window.addstr(int(curses.LINES * 0.4), int(curses.COLS * 0.5) - 4, f"{INITIATIVE_LIST[0].name} WINS!")
     window.addstr(int(curses.LINES * 0.5), int(curses.COLS * 0.5) - 10, "Press any key to exit")
     window.get_wch()
