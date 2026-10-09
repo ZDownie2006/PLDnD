@@ -8,7 +8,9 @@ import random
 
 INITIATIVE_LIST = [
     characters.fighter,
+    characters.mage,
     characters.goblin,
+    characters.demon
 ]
 
 # Visuals on certain actions
@@ -18,7 +20,7 @@ def action_text(text, position, window: curses.window, display_time=0.75):
     time.sleep(display_time)
     window.addstr(position[0] + 1, position[1] - (len(text)//2), " " * len(text))
 
-def attack_vis(window: curses.window, attacker, target):
+def attack_vis(window: curses.window, attacker, target, player_list, enemy_list):
     old_health = target.hp
     combat_back.attack(attacker, target)
     damage = old_health - target.hp
@@ -33,12 +35,10 @@ def attack_vis(window: curses.window, attacker, target):
     if target.hp <= 0:
         action_text("ARGHHH!", target.position, window, 1)
         window.addstr(target.position[0], target.position[1], "💀")
-        INITIATIVE_LIST.pop()
+        INITIATIVE_LIST.remove(target)
+        enemy_list.remove(target) if target.role_type == "Enemy" else player_list.remove(target)
     elif target.hp <= target.max_hp // 2 and old_health > target.max_hp // 2:
-        if target.role_type == "Enemy":
-            window.addstr(target.position[0], target.position[1], "👿")
-        else:
-            window.addstr(target.position[0], target.position[1], "🤕")
+        window.addstr(target.position[0], target.position[1], target.injured_sprite)
         action_text("THAT HURTS!", target.position, window)
         
     action_text(f"{attacker.name} did {damage} damage to {target.name}", centre, window, 1)
@@ -58,9 +58,9 @@ def heal_vis(window: curses.window, player):
     action_text(f"{player.name} heals for {healed} hp!", centre, window, 1)
     if old_health < player.max_hp // 2 and player.hp > player.max_hp // 2:
         if player.role_type == "Enemy":
-            window.addstr(player.position[0], player.position[1], "😈")
+            window.addstr(player.position[0], player.position[1], player.healthy_sprite)
         else:
-            window.addstr(player.position[0], player.position[1], "😎")
+            window.addstr(player.position[0], player.position[1], player.healthy_sprite)
         action_text("COOL AS A CUCUMBER!", player.position, window)
 
 
@@ -74,13 +74,13 @@ def options_vis(window: curses.window):
     options.addstr(4, int(curses.COLS * 0.60)-3, "3. HEAL 🧪")
     options.addstr(4, int(curses.COLS * 0.80)-3, "0. QUIT 💨")
 
-def create_sprites(window: curses.window, character):
-    if character.role_type == "Player":
-        character.position = (int(curses.LINES * 0.4), int(curses.COLS * 0.25))
-        window.addstr(character.position[0], character.position[1], "😎")
-    elif character.role_type == "Enemy":
-        character.position = (int(curses.LINES * 0.4), int(curses.COLS * 0.75))
-        window.addstr(character.position[0], character.position[1], "😈")
+def create_sprites(window: curses.window, characters):
+    party_size = len(characters)
+    x_coordinate = int(curses.COLS * 0.25) if characters[0].role_type == "Player" else int(curses.COLS * 0.75)
+    for index, character in enumerate(characters):
+        y_coordinate = int(0 + (index + 1) * (curses.LINES - (curses.LINES * 0.25)) / (party_size + 1))
+        character.position = (y_coordinate, x_coordinate)
+        window.addstr(character.position[0], character.position[1], character.healthy_sprite)
 
 def fight_vis(window: curses.window):
     window.clear()
@@ -89,11 +89,15 @@ def fight_vis(window: curses.window):
     # Create Options Window
     options_vis(window)
 
-    # Create Sprites
-    for character in INITIATIVE_LIST:
-        create_sprites(window, character)
+    # Create Player Sprites
+    player_list = [character for character in INITIATIVE_LIST if character.role_type == "Player"]
+    create_sprites(window, player_list)
 
-    while (len(INITIATIVE_LIST) > 1):
+    # Create Enemy Sprites
+    enemy_list = [character for character in INITIATIVE_LIST if character.role_type == "Enemy"]
+    create_sprites(window, enemy_list)
+
+    while (enemy_list and player_list):
         window.refresh()
         active_character = INITIATIVE_LIST.pop(0)
 
@@ -108,14 +112,15 @@ def fight_vis(window: curses.window):
         if active_character.role_type == "Player":
             while action not in actions:
                 action = window.get_wch()
+            target = enemy_list[0]
         else:
             action = random.choices(actions, [0, 3, 2, 1], k=1)[0]
-        target = INITIATIVE_LIST[0]
+            target = player_list[0]
         action = int(action)
 
         match (action):
             case 1:
-                attack_vis(window, active_character, target)
+                attack_vis(window, active_character, target, player_list, enemy_list)
             case 2:
                 dodge_vis(window, active_character)
             case 3:
@@ -127,7 +132,7 @@ def fight_vis(window: curses.window):
         INITIATIVE_LIST.append(active_character)
         new_window.clear()
 
-    win_string = f"{INITIATIVE_LIST[0].name} WINS!"
-    window.addstr(int(curses.LINES * 0.4), int((curses.COLS - len(win_string)) * 0.5), f"{INITIATIVE_LIST[0].name} WINS!")
+    win_string = f"YOUR PARTY WINS!" if player_list else "GAME OVER"
+    window.addstr(int(curses.LINES * 0.4), int((curses.COLS - len(win_string)) * 0.5), win_string)
     window.addstr(int(curses.LINES * 0.5), int(curses.COLS * 0.5) - 10, "Press any key to exit")
     window.get_wch()
