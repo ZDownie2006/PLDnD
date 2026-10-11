@@ -29,8 +29,12 @@ def main(window: curses.window):
         if c == 'x':
             break
         elif c == ' ':
+            window.clear()
             menu.set_char_stat(window)
-        
+            window.refresh()
+            c = window.get_wch()
+            break
+
         if c == 'c':
             combat_front.fight_vis(window)
             break
