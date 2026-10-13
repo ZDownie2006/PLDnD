@@ -86,7 +86,6 @@ class Characters:
     def initiative(self, initiative: int) -> int:
         self.__initiative = initiative
 
-
 fighter = Characters("Steve", "Fighter", "Player", 15, 15, 14, 14, 3, 6, True, (), "😎", "🤕")
 mage = Characters("Gandalf", "Mage", "Player", 10, 10, 12, 12, 6, 6, True, (), "🔮", "🤢")
 goblin = Characters("Boggard", "Goblin", "Enemy", 12, 12, 14, 14, 5, 2, True, (), "👺", "🐸")

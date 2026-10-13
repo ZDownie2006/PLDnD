@@ -34,7 +34,7 @@ def main(window: curses.window):
             menu.set_char_stat(window)
             curses.doupdate()
             c = window.get_wch()
-
+            
         if c == 'c':
             combat_front.fight_vis(window)
             break
