@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+from random import randint
 
 
 class Characters:
@@ -17,7 +18,7 @@ class Characters:
         is_alive,
         position,
         healthy_sprite,
-        injured_sprite
+        injured_sprite,
     ):
         self.name = name
         self.role = role
@@ -34,8 +35,32 @@ class Characters:
         self.healthy_sprite = healthy_sprite
         self.injured_sprite = injured_sprite
 
-        def __str__(self):
-            print(self.name)
+    def attack(self, target):
+        hit = randint(1, 20) + (self.at_mod)
+        # print(f"{(attacker).name} attacks {(target).name} with a {hit}")
+        if hit >= (target.cur_ac):
+            # print(f"{attacker.name} hits! dealing {attacker.dmg} damage to {target.name}!")
+            (target).hp = (target.hp) - (self.dmg)
+        # else:
+        # print(f"{attacker.name} Missed! Unfortunate")
+        return hit
+
+    def dodge(current):
+        current.cur_ac = (current.ac) + 5
+
+    def heal(current):
+        if current.hp < current.max_hp:
+            heal = randint(1, 5)
+            current.hp = current.hp + heal
+        # print(f"{current.name} heals for {heal} hp!")
+        if current.hp > current.max_hp:
+            current.hp = current.max_hp
+        # print(f"{current.name} healed to full")
+        elif current.hp >= current.max_hp:
+            return
+
+    def __str__(self):
+        print(self.name)
 
     @property
     def name(self) -> str:
@@ -86,7 +111,15 @@ class Characters:
         self.__initiative = initiative
 
 
-fighter = Characters("Steve", "Fighter", "Player", 15, 15, 14, 14, 3, 6, 0, True, (), "😎", "🤕")
-mage = Characters("Gandalf", "Mage", "Player", 10, 10, 12, 12, 6, 6, 0, True, (), "🔮", "🤢")
-goblin = Characters("Boggard", "Goblin", "Enemy", 12, 12, 14, 14, 5, 2, 0, True, (), "👺", "🐸")
-demon = Characters("Asmodeus", "Demon", "Enemy", 15, 15, 12, 12, 4, 4, 0, True, (), "😈", "👿")
+fighter = Characters(
+    "Steve", "Fighter", "Player", 15, 15, 14, 14, 3, 6, 0, True, (), "😎", "🤕"
+)
+mage = Characters(
+    "Gandalf", "Mage", "Player", 10, 10, 12, 12, 6, 6, 0, True, (), "🔮", "🤢"
+)
+goblin = Characters(
+    "Boggard", "Goblin", "Enemy", 12, 12, 14, 14, 5, 2, 0, True, (), "👺", "🐸"
+)
+demon = Characters(
+    "Asmodeus", "Demon", "Enemy", 15, 15, 12, 12, 4, 4, 0, True, (), "😈", "👿"
+)
