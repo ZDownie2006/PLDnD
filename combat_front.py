@@ -7,12 +7,7 @@ import characters
 import random
 from sound_effects import battle_music, victory_music
 
-INITIATIVE_LIST = [
-    characters.fighter,
-    characters.mage,
-    characters.goblin,
-    characters.demon
-]
+INITIATIVE_LIST = characters.get_initative_list()
 
 # Visuals on certain actions
 def action_text(text, position, window: curses.window, display_time=0.75):
