@@ -46,7 +46,7 @@ def combat():
                     else:
                         idx = randint(0, (len(plist) - 1))
                         target = plist[idx]
-                    attack(current, target)
+                    current.attack(target)
                     if hp_check(target):
                         target.is_alive = False
                         initiative_list.remove(target)
@@ -61,9 +61,9 @@ def combat():
                             game_state = False
                             break
                 case 2:
-                    dodge(current)
+                    current.dodge(current)
                 case 3:
-                    heal(current)
+                    current.heal(current)
                 case 0:
                     break
                 case _:
