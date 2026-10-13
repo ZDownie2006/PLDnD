@@ -171,12 +171,10 @@ def fight_vis(window: curses.window):
 
     # Create Player Sprites
     player_list = combat_back.player_list(INITIATIVE_LIST)
-    # player_list = [character for character in INITIATIVE_LIST if character.role_type == "Player"]
     create_sprites(window, player_list)
 
     # Create Enemy Sprites
     enemy_list = combat_back.enemy_list(INITIATIVE_LIST)
-    # enemy_list = [character for character in INITIATIVE_LIST if character.role_type == "Enemy"]
     create_sprites(window, enemy_list)
 
     while (enemy_list and player_list):        
