@@ -25,13 +25,14 @@ def main(window: curses.window):
 
     while 1:  # Loop so the game doesn't exit instantly
         menu.start(window)
+        curses.doupdate()
         c = window.get_wch()
         if c == 'x':
             break
         elif c == ' ':
             window.clear()
             menu.set_char_stat(window)
-            window.refresh()
+            curses.doupdate()
             c = window.get_wch()
 
         if c == 'c':

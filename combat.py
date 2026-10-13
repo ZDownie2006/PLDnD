@@ -7,12 +7,8 @@ from combat_back import attack, dodge, heal, hp_check, player_list, enemy_list
 
 
 def combat():
-    initiative_list = [
-        characters.fighter,
-        characters.goblin,
-        characters.demon,
-        characters.mage,
-    ]
+    initiative_list = characters.get_initiative_list();
+
     game_state = True
     while game_state == True:
         plist = player_list(initiative_list)

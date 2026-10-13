@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+import random
+
 
 class Characters:
     def __init__(
@@ -13,7 +15,6 @@ class Characters:
         ac,
         at_mod,
         dmg,
-        initiative,
         is_alive,
         position,
         healthy_sprite,
@@ -28,7 +29,7 @@ class Characters:
         self.ac = ac
         self.at_mod = at_mod
         self.dmg = dmg
-        self.initiative = initiative
+        self.initiative = random.randint(1,20)
         self.is_alive = is_alive
         self.position = position
         self.healthy_sprite = healthy_sprite
@@ -86,7 +87,12 @@ class Characters:
         self.__initiative = initiative
 
 
-fighter = Characters("Steve", "Fighter", "Player", 15, 15, 14, 14, 3, 6, 0, True, (), "😎", "🤕")
-mage = Characters("Gandalf", "Mage", "Player", 10, 10, 12, 12, 6, 6, 0, True, (), "🔮", "🤢")
-goblin = Characters("Boggard", "Goblin", "Enemy", 12, 12, 14, 14, 5, 2, 0, True, (), "👺", "🐸")
-demon = Characters("Asmodeus", "Demon", "Enemy", 15, 15, 12, 12, 4, 4, 0, True, (), "😈", "👿")
+fighter = Characters("Steve", "Fighter", "Player", 15, 15, 14, 14, 3, 6, True, (), "😎", "🤕")
+mage = Characters("Gandalf", "Mage", "Player", 10, 10, 12, 12, 6, 6, True, (), "🔮", "🤢")
+goblin = Characters("Boggard", "Goblin", "Enemy", 12, 12, 14, 14, 5, 2, True, (), "👺", "🐸")
+demon = Characters("Asmodeus", "Demon", "Enemy", 15, 15, 12, 12, 4, 4, True, (), "😈", "👿")
+
+def get_initative_list():
+    characters = [fighter, goblin, demon, mage]
+    characters.sort(key=lambda x: x.initiative, reverse=True)
+    return characters
