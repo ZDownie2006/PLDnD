@@ -33,7 +33,6 @@ def main(window: curses.window):
             menu.set_char_stat(window)
             window.refresh()
             c = window.get_wch()
-            break
 
         if c == 'c':
             combat_front.fight_vis(window)

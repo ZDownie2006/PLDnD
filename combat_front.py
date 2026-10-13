@@ -141,10 +141,6 @@ def select_target(window: curses.window, enemy_list):
         
         # Make a box
         red = curses.color_pair(2)
-        # window.addstr(current_enemy.position[0] + 1, current_enemy.position[1], "⎯", red)
-        # window.addstr(current_enemy.position[0], current_enemy.position[1] + 1, "|", red)
-        # window.addstr(current_enemy.position[0], current_enemy.position[1] - 1, "|", red)
-        # window.addstr(current_enemy.position[0] - 1, current_enemy.position[1], "⎯", red)
         window.addstr(current_enemy.position[0], current_enemy.position[1], current_enemy.healthy_sprite, curses.color_pair(3))
 
         attack_string = f"Attack {current_enemy.name}"
@@ -157,10 +153,6 @@ def select_target(window: curses.window, enemy_list):
             case curses.KEY_DOWN:
                 i += 1
 
-        # window.addstr(current_enemy.position[0] + 1, current_enemy.position[1], "  ")
-        # window.addstr(current_enemy.position[0], current_enemy.position[1] + 1, " ")
-        # window.addstr(current_enemy.position[0], current_enemy.position[1] - 1, " ")
-        # window.addstr(current_enemy.position[0] - 1, current_enemy.position[1], "  ")
         window.addstr(current_enemy.position[0], current_enemy.position[1], current_enemy.healthy_sprite, curses.color_pair(1))
         window.addstr(int(curses.LINES * 0.65), int((curses.COLS - len(attack_string)) * 0.5), " " * len(attack_string))
 
