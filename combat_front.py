@@ -5,6 +5,8 @@ import time
 import combat_back
 import characters
 import random
+import display_classes
+import sprite_classes
 from sound_effects import battle_music, victory_music
 
 INITIATIVE_LIST = [
@@ -94,6 +96,7 @@ def create_sprites(window: curses.window, characters):
     for index, character in enumerate(characters):
         y_coordinate = int(0 + (index + 1) * (curses.LINES - (curses.LINES * 0.25)) / (party_size + 1))
         character.position = (y_coordinate, x_coordinate)
+        
         window.addstr(character.position[0], character.position[1], character.healthy_sprite)
 
 # Allows player to choose an action via arrow keys
@@ -160,71 +163,102 @@ def select_target(window: curses.window, enemy_list):
 
     
 def fight_vis(window: curses.window):
-    background_music = battle_music()
 
-    window.clear()
-    window.border("|", "|", "-", 0, "+", "+")
-    curses.init_pair(2, curses.COLOR_RED, -1)
-    curses.init_pair(3, -1, curses.COLOR_RED)
-    curses.init_pair(4, curses.COLOR_BLUE, -1)
-    curses.init_pair(5, curses.COLOR_GREEN, -1)
+    combat_window = display_classes.Display(int(curses.LINES * 0.75), curses.COLS, (0, 0))
+    combat_window.create_border()
 
+    options_window = display_classes.Actions(int(curses.LINES * 0.15), curses.COLS, (int(curses.LINES * 0.85), 0))
+    options_window.create_border()
+
+    combat_window.window.refresh()
+    options_window.window.refresh()
+
+    ## Create Sprites
+    sprite_dictionary = {}
+    
     # Create Player Sprites
     player_list = combat_back.player_list(INITIATIVE_LIST)
-    create_sprites(window, player_list)
+    party_size = len(player_list)
+    x_coordinate = int(curses.COLS * 0.25)
+    for index, player in enumerate(player_list):
+        y_coordinate = int(0 + (index + 1) * (curses.LINES - (curses.LINES * 0.25)) / (party_size + 1))
+        sprite_dictionary[player] = sprite_classes.Sprite(combat_window.window, player, (y_coordinate, x_coordinate))
 
     # Create Enemy Sprites
     enemy_list = combat_back.enemy_list(INITIATIVE_LIST)
-    create_sprites(window, enemy_list)
+    party_size = len(enemy_list)
+    x_coordinate = int(curses.COLS * 0.75)
+    for index, enemy in enumerate(enemy_list):
+        y_coordinate = int(0 + (index + 1) * (curses.LINES - (curses.LINES * 0.25)) / (party_size + 1))
+        sprite_dictionary[enemy] = sprite_classes.Sprite(combat_window.window, enemy, (y_coordinate, x_coordinate))
 
-    while (enemy_list and player_list):        
-        window.refresh()
-        if not background_music.is_alive():
-            background_music = battle_music()
+    while True:
+        pass
+    # background_music = battle_music()
+
+    # window.clear()
+    # window.border("|", "|", "-", 0, "+", "+")
+    # curses.init_pair(2, curses.COLOR_RED, -1)
+    # curses.init_pair(3, -1, curses.COLOR_RED)
+    # curses.init_pair(4, curses.COLOR_BLUE, -1)
+    # curses.init_pair(5, curses.COLOR_GREEN, -1)
+
+    # # Create Player Sprites
+    # player_list = combat_back.player_list(INITIATIVE_LIST)
+    # create_sprites(window, player_list)
+
+    # # Create Enemy Sprites
+    # enemy_list = combat_back.enemy_list(INITIATIVE_LIST)
+    # create_sprites(window, enemy_list)
+
+    # while (enemy_list and player_list):        
+    #     window.refresh()
+    #     if not background_music.is_alive():
+    #         background_music = battle_music()
         
-        active_character = INITIATIVE_LIST.pop(0)
-        turn_string = f"{active_character.name}'s turn".upper()
-        window.addstr(active_character.position[0] - 1, active_character.position[1], "▼", curses.color_pair(5))
-        window.refresh()
+    #     active_character = INITIATIVE_LIST.pop(0)
+    #     turn_string = f"{active_character.name}'s turn".upper()
+    #     window.addstr(active_character.position[0] - 1, active_character.position[1], "▼", curses.color_pair(5))
+    #     window.refresh()
 
-        # Update Options Window
-        options_win = options_vis(window, turn_string)
+    #     # Update Options Window
+    #     options_win = options_vis(window, turn_string)
         
-        time.sleep(0.5)
+    #     time.sleep(0.5)
 
-        # Ignore key presses during action processes
-        curses.flushinp()
+    #     # Ignore key presses during action processes
+    #     curses.flushinp()
 
-        action = -1
-        actions = [0, 1, 2, 3]
-        if active_character.role_type == "Player":
-            while action not in actions:
-                action = select_action(options_win)
-            if action == 1:
-                target = select_target(window, enemy_list)
-        else:
-            action = random.choices(actions, [0, 3, 2, 1], k=1)[0]
-            target = random.choice(player_list)
+    #     action = -1
+    #     actions = [0, 1, 2, 3]
+    #     if active_character.role_type == "Player":
+    #         while action not in actions:
+    #             action = select_action(options_win)
+    #         if action == 1:
+    #             target = select_target(window, enemy_list)
+    #     else:
+    #         action = random.choices(actions, [0, 3, 2, 1], k=1)[0]
+    #         target = random.choice(player_list)
 
-        match (action):
-            case 1:
-                attack_vis(window, active_character, target, player_list, enemy_list)
-            case 2:
-                dodge_vis(window, active_character)
-            case 3:
-                heal_vis(window, active_character)
-            case 0:
-                background_music.stop()
-                return
+    #     match (action):
+    #         case 1:
+    #             attack_vis(window, active_character, target, player_list, enemy_list)
+    #         case 2:
+    #             dodge_vis(window, active_character)
+    #         case 3:
+    #             heal_vis(window, active_character)
+    #         case 0:
+    #             background_music.stop()
+    #             return
         
-        window.refresh()  # Refresh
-        INITIATIVE_LIST.append(active_character)
-        window.addstr(active_character.position[0] - 1, active_character.position[1], " ", curses.color_pair(1))
+    #     window.refresh()  # Refresh
+    #     INITIATIVE_LIST.append(active_character)
+    #     window.addstr(active_character.position[0] - 1, active_character.position[1], " ", curses.color_pair(1))
 
-    background_music.stop()
-    endgame_music = victory_music()
-    win_string = f"YOUR PARTY WINS!" if player_list else "GAME OVER"
-    window.addstr(int(curses.LINES * 0.4), int((curses.COLS - len(win_string)) * 0.5), win_string)
-    window.addstr(int(curses.LINES * 0.5), int(curses.COLS * 0.5) - 10, "Press any key to exit")
-    window.get_wch()
-    endgame_music.stop()
+    # background_music.stop()
+    # endgame_music = victory_music()
+    # win_string = f"YOUR PARTY WINS!" if player_list else "GAME OVER"
+    # window.addstr(int(curses.LINES * 0.4), int((curses.COLS - len(win_string)) * 0.5), win_string)
+    # window.addstr(int(curses.LINES * 0.5), int(curses.COLS * 0.5) - 10, "Press any key to exit")
+    # window.get_wch()
+    # endgame_music.stop()
