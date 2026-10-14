@@ -4,23 +4,8 @@ from random import randint
 import random
 
 
-class Characters:
-    def __init__(
-        self,
-        name,
-        role,
-        role_type,
-        max_hp,
-        hp,
-        cur_ac,
-        ac,
-        at_mod,
-        dmg,
-        is_alive,
-        position,
-        healthy_sprite,
-        injured_sprite,
-    ):
+class Character:
+    def __init__(self, name, role, role_type, max_hp, hp, cur_ac, ac, at_mod, dmg, is_alive, position, healthy_sprite,injured_sprite,):
         self.name = name
         self.role = role
         self.role_type = role_type
@@ -38,12 +23,8 @@ class Characters:
 
     def attack(self, target):
         hit = randint(1, 20) + (self.at_mod)
-        # print(f"{(attacker).name} attacks {(target).name} with a {hit}")
         if hit >= (target.cur_ac):
-            # print(f"{attacker.name} hits! dealing {attacker.dmg} damage to {target.name}!")
             (target).hp = (target.hp) - (self.dmg)
-        # else:
-        # print(f"{attacker.name} Missed! Unfortunate")
         return hit
 
     def dodge(current):
@@ -53,10 +34,8 @@ class Characters:
         if current.hp < current.max_hp:
             heal = randint(1, 5)
             current.hp = current.hp + heal
-        # print(f"{current.name} heals for {heal} hp!")
         if current.hp > current.max_hp:
             current.hp = current.max_hp
-        # print(f"{current.name} healed to full")
         elif current.hp >= current.max_hp:
             return
 
@@ -111,20 +90,82 @@ class Characters:
     def initiative(self, initiative: int) -> int:
         self.__initiative = initiative
 
+class Fighter(Character):
+    role = "Fighter"
+    role_type = "Player"
+    max_hp = 15
+    hp = 15
+    cur_ac = 14
+    ac = 14
+    at_mod = 3
+    dmg = 6
+    initiative = random.randint(1, 20)
+    is_alive = True
+    position = ()
+    healthy_sprite = "😎"
+    injured_sprite = "🤕"
 
-fighter = Characters(
-    "Steve", "Fighter", "Player", 15, 15, 14, 14, 3, 6, True, (), "😎", "🤕"
-)
-mage = Characters(
-    "Gandalf", "Mage", "Player", 10, 10, 12, 12, 6, 6, True, (), "🔮", "🤢"
-)
-goblin = Characters(
-    "Boggard", "Goblin", "Enemy", 12, 12, 14, 14, 5, 2, True, (), "👺", "🐸"
-)
-demon = Characters(
-    "Asmodeus", "Demon", "Enemy", 15, 15, 12, 12, 4, 4, True, (), "😈", "👿"
-)
+    def __init__(self, name):
+        Character.__init__(self, name, self.role, self.role_type, self.max_hp, self.hp, self.cur_ac, self.ac, self.at_mod, self.dmg, self.is_alive, self.position, self.healthy_sprite, self.injured_sprite,)
 
+class Mage(Character):
+    role = "Mage"
+    role_type = "Player"
+    max_hp = 10
+    hp = 10
+    cur_ac = 12
+    ac = 12
+    at_mod = 6
+    dmg = 6
+    initiative = random.randint(1, 20)
+    is_alive = True
+    position = ()
+    healthy_sprite = "🔮"
+    injured_sprite = "🤢"
+
+    def __init__(self, name):
+        Character.__init__(self, name, self.role, self.role_type, self.max_hp, self.hp, self.cur_ac, self.ac, self.at_mod, self.dmg, self.is_alive, self.position, self.healthy_sprite, self.injured_sprite,)
+
+class Goblin(Character):
+    role = "Goblin"
+    role_type = "Enemy"
+    max_hp = 12
+    hp = 12
+    cur_ac = 14
+    ac = 14
+    at_mod = 5
+    dmg = 2
+    initiative = random.randint(1, 20)
+    is_alive = True
+    position = ()
+    healthy_sprite = "👺"
+    injured_sprite = "🐸"
+
+    def __init__(self, name):
+        Character.__init__(self, name, self.role, self.role_type, self.max_hp, self.hp, self.cur_ac, self.ac, self.at_mod, self.dmg, self.is_alive, self.position, self.healthy_sprite, self.injured_sprite,)
+
+class Demon(Character):
+    role = "Demon"
+    role_type = "Enemy"
+    max_hp = 15
+    hp = 15
+    cur_ac = 12
+    ac = 12
+    at_mod = 4
+    dmg = 4
+    initiative = random.randint(1, 20)
+    is_alive = True
+    position = ()
+    healthy_sprite = "😈"
+    injured_sprite = "👿"
+
+    def __init__(self, name):
+        Character.__init__(self, name, self.role, self.role_type, self.max_hp, self.hp, self.cur_ac, self.ac, self.at_mod, self.dmg, self.is_alive, self.position, self.healthy_sprite, self.injured_sprite,)
+
+fighter = Fighter("Steve")
+mage = Mage("Gandalf")
+goblin = Goblin("Boggard")
+demon = Demon("Asmodeus")
 
 def get_initative_list():
     characters = [fighter, goblin, demon, mage]

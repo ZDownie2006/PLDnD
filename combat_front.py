@@ -2,8 +2,8 @@
 
 import curses
 import time
-import combat_back
 import characters
+import combat_back
 import random
 from sound_effects import battle_music, victory_music
 
@@ -18,7 +18,7 @@ def action_text(text, position, window: curses.window, display_time=0.75):
 
 def attack_vis(window: curses.window, attacker, target, player_list, enemy_list):
     old_health = target.hp
-    roll = combat_back.attack(attacker, target)
+    roll = attacker.attack(target)
     damage = old_health - target.hp
     centre = (int(curses.LINES * 0.5), int(curses.COLS * 0.5))
 
@@ -44,14 +44,14 @@ def attack_vis(window: curses.window, attacker, target, player_list, enemy_list)
 
 def dodge_vis(window: curses.window, player):
     centre = (int(curses.LINES * 0.5), int(curses.COLS * 0.5))
-    combat_back.dodge(player)
+    player.dodge()
     action_text("LEAVE ME ALONE!", player.position, window)
     action_text(f"{player.name} prepares to dodge! New AC {player.cur_ac}", centre, window, 2)
 
 def heal_vis(window: curses.window, player):
     centre = (int(curses.LINES * 0.5), int(curses.COLS * 0.5))
     old_health = player.hp
-    combat_back.heal(player)
+    player.heal()
     action_text("HEALING UP!", player.position, window)
     healed = player.hp - old_health
     action_text(f"{player.name} heals for {healed} hp!", centre, window, 1)
