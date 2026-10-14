@@ -9,7 +9,9 @@ class Sprite:
         self.character = character
         self.position = position
         self.state = self.character.healthy_sprite
-        self.display_sprite(window)
+        self.active = False
+        self.window = window
+        self.display_sprite()
 
     def get_position(self):
         return self.position
@@ -17,9 +19,16 @@ class Sprite:
     def set_position(self, new_position):
         self.position = new_position
 
-    def display_sprite(self, window: curses.window):
-        window.addstr(self.position[0], self.position[1], self.state)
-        window.refresh()
+    def display_sprite(self):
+        self.window.addstr(self.position[0], self.position[1], self.state)
+        self.window.refresh()
+
+    def is_active(self, active):
+        if active:
+            self.window.addstr(self.position[0] - 1, self.position[1], "▼", curses.color_pair(5))
+        else:
+            self.window.addstr(self.position[0] - 1, self.position[1], " ", curses.color_pair(5))
+        self.window.refresh()
 
     def update_state(self):
         if self.state == self.character.healthy_sprite:
