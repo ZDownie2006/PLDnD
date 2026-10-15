@@ -31,9 +31,11 @@ class Display:
             # Make a box
             red = curses.color_pair(2)
             self.window.addstr(sprite_dictionary[current_enemy].position[0], sprite_dictionary[current_enemy].position[1], sprite_dictionary[current_enemy].state, curses.color_pair(3))
+            # self.window.addstr(sprite_dictionary[current_enemy].position[0], sprite_dictionary[current_enemy].position[1], sprite_dictionary[current_enemy].state, curses.color_pair(3))
             
             attack_string = f"Attack {current_enemy.name}"
-            self.window.addstr(curses.LINES - 1, int((curses.COLS - len(attack_string)) * 0.5), attack_string, red)
+            # self.window.addstr(20, 20, attack_string, red)
+            self.window.addstr(curses.LINES - 10, int(curses.COLS * 0.5), attack_string, red)
 
             self.window.refresh()
 
@@ -44,8 +46,9 @@ class Display:
                 case curses.KEY_DOWN:
                     i += 1
 
-            self.window.addstr(sprite_dictionary[current_enemy].position[0], sprite_dictionary[current_enemy].position[1], sprite_dictionary[current_enemy].sprite, curses.color_pair(1))
-            self.window.addstr(curses.LINES - 1, int((curses.COLS - len(attack_string)) * 0.5), " " * len(attack_string))
+            self.window.addstr(sprite_dictionary[current_enemy].position[0], sprite_dictionary[current_enemy].position[1], sprite_dictionary[current_enemy].state, curses.color_pair(1))
+            # self.window.addstr(20, 20, " " * len(attack_string))
+            self.window.addstr(curses.LINES - 5, int((curses.COLS - len(attack_string)) * 0.5), " " * len(attack_string))
 
         return current_enemy
 

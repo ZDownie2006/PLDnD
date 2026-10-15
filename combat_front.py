@@ -261,18 +261,18 @@ def fight_vis(window: curses.window):
             action = options_window.select_action()
 
         if active_character.role_type == "Player" and action == 1:
-            target = options_window.select_target(sprite_dictionary, enemy_list)
+            target = combat_window.select_target(sprite_dictionary, enemy_list)
 
-        match (action):
-            case 1:
-                attack_vis(window, active_character, target, player_list, enemy_list)
-            case 2:
-                dodge_vis(window, active_character)
-            case 3:
-                heal_vis(window, active_character)
-            case 0:
-                # background_music.stop()
-                return
+        # match (action):
+        #     case 1:
+        #         attack_vis(window, active_character, target, player_list, enemy_list)
+        #     case 2:
+        #         dodge_vis(window, active_character)
+        #     case 3:
+        #         heal_vis(window, active_character)
+        #     case 0:
+        #         # background_music.stop()
+        #         return
             
 
         options_window.window.getch()
