@@ -6,20 +6,24 @@ from enum import Enum
 
 CHARACTERS = []
 
+
 class PlayerRole(Enum):
     FIGHTER = 1
     MAGE = 2
+
 
 class EnemyRole(Enum):
     GOBLIN = 1
     DEMON = 2
 
+
 class RoleType(Enum):
     PLAYER = 1
     ENEMY = 2
 
+
 class Character:
-    def __init__(self, name, role, role_type, max_hp, hp, cur_ac, ac, at_mod, dmg, is_alive, position, healthy_sprite,injured_sprite,):
+    def __init__(self, name, role, role_type, max_hp, hp, cur_ac, ac, at_mod, dmg, is_alive, position, healthy_sprite, injured_sprite,):
         self.name = name
         self.role = role
         self.role_type = role_type
@@ -104,77 +108,81 @@ class Character:
     def initiative(self, initiative: int) -> int:
         self.__initiative = initiative
 
-class Fighter(Character):
-    role = "Fighter"
-    role_type = "Player"
-    max_hp = 15
-    hp = 15
-    cur_ac = 14
-    ac = 14
-    at_mod = 3
-    dmg = 6
-    initiative = random.randint(1, 20)
-    is_alive = True
-    position = ()
-    healthy_sprite = "😎"
-    injured_sprite = "🤕"
 
+class Fighter(Character):
     def __init__(self, name):
-        Character.__init__(self, name, self.role, self.role_type, self.max_hp, self.hp, self.cur_ac, self.ac, self.at_mod, self.dmg, self.is_alive, self.position, self.healthy_sprite, self.injured_sprite,)
+        Character.__init__(
+            self,
+            name,
+            role="Fighter",
+            role_type="Player",
+            max_hp=15,
+            hp=15,
+            cur_ac=14,
+            ac=14,
+            at_mod=3,
+            dmg=6,
+            is_alive=True,
+            position=(),
+            healthy_sprite="😎",
+            injured_sprite="🤕",)
+
 
 class Mage(Character):
-    role = "Mage"
-    role_type = "Player"
-    max_hp = 10
-    hp = 10
-    cur_ac = 12
-    ac = 12
-    at_mod = 6
-    dmg = 6
-    initiative = random.randint(1, 20)
-    is_alive = True
-    position = ()
-    healthy_sprite = "🔮"
-    injured_sprite = "🤢"
-
     def __init__(self, name):
-        Character.__init__(self, name, self.role, self.role_type, self.max_hp, self.hp, self.cur_ac, self.ac, self.at_mod, self.dmg, self.is_alive, self.position, self.healthy_sprite, self.injured_sprite,)
+        Character.__init__(
+            self,
+            name,
+            role="Mage",
+            role_type="Player",
+            max_hp=10,
+            hp=10,
+            cur_ac=12,
+            ac=12,
+            at_mod=6,
+            dmg=6,
+            is_alive=True,
+            position=(),
+            healthy_sprite="🔮",
+            injured_sprite="🤢",)
+
 
 class Goblin(Character):
-    role = "Goblin"
-    role_type = "Enemy"
-    max_hp = 12
-    hp = 12
-    cur_ac = 14
-    ac = 14
-    at_mod = 5
-    dmg = 2
-    initiative = random.randint(1, 20)
-    is_alive = True
-    position = ()
-    healthy_sprite = "👺"
-    injured_sprite = "🐸"
-
     def __init__(self, name):
-        Character.__init__(self, name, self.role, self.role_type, self.max_hp, self.hp, self.cur_ac, self.ac, self.at_mod, self.dmg, self.is_alive, self.position, self.healthy_sprite, self.injured_sprite,)
+        Character.__init__(
+            self,
+            name,
+            role="Goblin",
+            role_type="Enemy",
+            max_hp=12,
+            hp=12,
+            cur_ac=14,
+            ac=14,
+            at_mod=5,
+            dmg=2,
+            is_alive=True,
+            position=(),
+            healthy_sprite="👺",
+            injured_sprite="🐸",)
+
 
 class Demon(Character):
-    role = "Demon"
-    role_type = "Enemy"
-    max_hp = 15
-    hp = 15
-    cur_ac = 12
-    ac = 12
-    at_mod = 4
-    dmg = 4
-    initiative = random.randint(1, 20)
-    is_alive = True
-    position = ()
-    healthy_sprite = "😈"
-    injured_sprite = "👿"
-
     def __init__(self, name):
-        Character.__init__(self, name, self.role, self.role_type, self.max_hp, self.hp, self.cur_ac, self.ac, self.at_mod, self.dmg, self.is_alive, self.position, self.healthy_sprite, self.injured_sprite,)
+        Character.__init__(
+            self,
+            name,
+            role="Demon",
+            role_type="Enemy",
+            max_hp=15,
+            hp=15,
+            cur_ac=12,
+            ac=12,
+            at_mod=4,
+            dmg=4,
+            is_alive=True,
+            position=(),
+            healthy_sprite="😈",
+            injured_sprite="👿",)
 
 
 class RoleCharacterCount():
@@ -182,6 +190,7 @@ class RoleCharacterCount():
     MAGE = 0
     GOBLIN = 0
     DEMON = 0
+
 
 def create_character(role_type, role):
     match role_type:
