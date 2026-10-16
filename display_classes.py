@@ -9,15 +9,16 @@ class Display:
         self.width = width
         self.coordinates = coordinates
         self.window = curses.newwin(self.height, self.width, self.coordinates[0], self.coordinates[1])
+        self.size = self.window.getmaxyx()
 
     def create_border(self, ls="|", rs="|", ts="-", bs="-"):
         self.window.border(ls, rs, ts, bs)
 
     def display_text(self, text="", position=(0, 0), display_time=0.75):
-        self.window.addstr(position[0], position[1], text)
+        self.window.addstr(position[0], int(position[1] - (len(text) * 0.5)), text)
         self.window.refresh()
         time.sleep(display_time)
-        self.window.addstr(position[0], position[1], " " * len(text))
+        self.window.addstr(position[0], int(position[1] - (len(text) * 0.5)), " " * len(text))
         self.window.refresh()
 
     def select_target(self, sprite_dictionary, enemy_list):
@@ -31,11 +32,9 @@ class Display:
             # Make a box
             red = curses.color_pair(2)
             self.window.addstr(sprite_dictionary[current_enemy].position[0], sprite_dictionary[current_enemy].position[1], sprite_dictionary[current_enemy].state, curses.color_pair(3))
-            # self.window.addstr(sprite_dictionary[current_enemy].position[0], sprite_dictionary[current_enemy].position[1], sprite_dictionary[current_enemy].state, curses.color_pair(3))
             
             attack_string = f"Attack {current_enemy.name}"
-            # self.window.addstr(20, 20, attack_string, red)
-            self.window.addstr(curses.LINES - 10, int(curses.COLS * 0.5), attack_string, red)
+            self.window.addstr(curses.LINES - 10, int(curses.COLS * 0.5) - int(len(attack_string) * 0.5), attack_string, red)
 
             self.window.refresh()
 
@@ -47,9 +46,9 @@ class Display:
                     i += 1
 
             self.window.addstr(sprite_dictionary[current_enemy].position[0], sprite_dictionary[current_enemy].position[1], sprite_dictionary[current_enemy].state, curses.color_pair(1))
-            # self.window.addstr(20, 20, " " * len(attack_string))
-            self.window.addstr(curses.LINES - 5, int((curses.COLS - len(attack_string)) * 0.5), " " * len(attack_string))
+            self.window.addstr(curses.LINES - 10, int(curses.COLS * 0.5) - int(len(attack_string) * 0.5), " " * len(attack_string))
 
+        self.window.refresh()
         return current_enemy
 
 class Actions(Display):
