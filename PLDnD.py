@@ -25,16 +25,13 @@ def main(window: curses.window):
 
     while 1:  # Loop so the game doesn't exit instantly
         menu.start(window)
-        curses.doupdate()
         c = window.get_wch()
         if c == 'x':
             break
         elif c == ' ':
-            window.clear()
             menu.set_char_stat(window)
-            curses.doupdate()
             c = window.get_wch()
-            
+
         if c == 'c':
             combat_front.fight_vis(window)
             break

@@ -1,26 +1,29 @@
 #!/usr/bin/env python3
-from random import randint
 
 import random
+from enum import Enum
 
 
-class Characters:
-    def __init__(
-        self,
-        name,
-        role,
-        role_type,
-        max_hp,
-        hp,
-        cur_ac,
-        ac,
-        at_mod,
-        dmg,
-        is_alive,
-        position,
-        healthy_sprite,
-        injured_sprite,
-    ):
+CHARACTERS = []
+
+
+class PlayerRole(Enum):
+    FIGHTER = 1
+    MAGE = 2
+
+
+class EnemyRole(Enum):
+    GOBLIN = 1
+    DEMON = 2
+
+
+class RoleType(Enum):
+    PLAYER = 1
+    ENEMY = 2
+
+
+class Character:
+    def __init__(self, name, role, role_type, max_hp, hp, cur_ac, ac, at_mod, dmg, is_alive, position, healthy_sprite, injured_sprite,):
         self.name = name
         self.role = role
         self.role_type = role_type
@@ -106,21 +109,109 @@ class Characters:
         self.__initiative = initiative
 
 
-fighter = Characters(
-    "Steve", "Fighter", "Player", 15, 15, 14, 14, 3, 6, True, (), "😎", "🤕"
-)
-mage = Characters(
-    "Gandalf", "Mage", "Player", 10, 10, 12, 12, 6, 6, True, (), "🔮", "🤢"
-)
-goblin = Characters(
-    "Boggard", "Goblin", "Enemy", 12, 12, 14, 14, 5, 2, True, (), "👺", "🐸"
-)
-demon = Characters(
-    "Asmodeus", "Demon", "Enemy", 15, 15, 12, 12, 4, 4, True, (), "😈", "👿"
-)
+class Fighter(Character):
+    def __init__(self, name):
+        Character.__init__(
+            self,
+            name,
+            role="Fighter",
+            role_type="Player",
+            max_hp=15,
+            hp=15,
+            cur_ac=14,
+            ac=14,
+            at_mod=3,
+            dmg=6,
+            is_alive=True,
+            position=(),
+            healthy_sprite="😎",
+            injured_sprite="🤕",)
+
+
+class Mage(Character):
+    def __init__(self, name):
+        Character.__init__(
+            self,
+            name,
+            role="Mage",
+            role_type="Player",
+            max_hp=10,
+            hp=10,
+            cur_ac=12,
+            ac=12,
+            at_mod=6,
+            dmg=6,
+            is_alive=True,
+            position=(),
+            healthy_sprite="🔮",
+            injured_sprite="🤢",)
+
+
+class Goblin(Character):
+    def __init__(self, name):
+        Character.__init__(
+            self,
+            name,
+            role="Goblin",
+            role_type="Enemy",
+            max_hp=12,
+            hp=12,
+            cur_ac=14,
+            ac=14,
+            at_mod=5,
+            dmg=2,
+            is_alive=True,
+            position=(),
+            healthy_sprite="👺",
+            injured_sprite="🐸",)
+
+
+class Demon(Character):
+    def __init__(self, name):
+        Character.__init__(
+            self,
+            name,
+            role="Demon",
+            role_type="Enemy",
+            max_hp=15,
+            hp=15,
+            cur_ac=12,
+            ac=12,
+            at_mod=4,
+            dmg=4,
+            is_alive=True,
+            position=(),
+            healthy_sprite="😈",
+            injured_sprite="👿",)
+
+
+class RoleCharacterCount():
+    FIGHTER = 0
+    MAGE = 0
+    GOBLIN = 0
+    DEMON = 0
+
+
+def create_character(role_type, role):
+    match role_type:
+        case RoleType.PLAYER.value:
+            match role:
+                case PlayerRole.FIGHTER.value:
+                    RoleCharacterCount.FIGHTER = RoleCharacterCount.FIGHTER + 1
+                    CHARACTERS.append(Fighter(f"Steve {RoleCharacterCount.FIGHTER}"))
+                case PlayerRole.MAGE.value:
+                    RoleCharacterCount.MAGE = RoleCharacterCount.MAGE + 1
+                    CHARACTERS.append(Mage(f"Gandalf {RoleCharacterCount.MAGE}"))
+        case RoleType.ENEMY.value:
+            match role:
+                case EnemyRole.GOBLIN.value:
+                    RoleCharacterCount.GOBLIN = RoleCharacterCount.GOBLIN + 1
+                    CHARACTERS.append(Goblin(f"Boggard {RoleCharacterCount.GOBLIN}"))
+                case EnemyRole.DEMON.value:
+                    RoleCharacterCount.DEMON = RoleCharacterCount.DEMON + 1
+                    CHARACTERS.append(Demon(f"Asmodeus {RoleCharacterCount.DEMON}"))
 
 
 def get_initative_list():
-    characters = [fighter, goblin, demon, mage]
-    characters.sort(key=lambda x: x.initiative, reverse=True)
-    return characters
+    CHARACTERS.sort(key=lambda x: x.initiative, reverse=True)
+    return CHARACTERS

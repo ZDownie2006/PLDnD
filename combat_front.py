@@ -2,8 +2,8 @@
 
 import curses
 import time
-import combat_back
 import characters
+import combat_back
 import random
 
 # from sound_effects import battle_music, victory_music
