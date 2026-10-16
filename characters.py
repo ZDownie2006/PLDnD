@@ -1,8 +1,22 @@
 #!/usr/bin/env python3
-from random import randint
 
 import random
+from enum import Enum
 
+
+CHARACTERS = []
+
+class PlayerRole(Enum):
+    FIGHTER = 1
+    MAGE = 2
+
+class EnemyRole(Enum):
+    GOBLIN = 1
+    DEMON = 2
+
+class RoleType(Enum):
+    PLAYER = 1
+    ENEMY = 2
 
 class Character:
     def __init__(self, name, role, role_type, max_hp, hp, cur_ac, ac, at_mod, dmg, is_alive, position, healthy_sprite,injured_sprite,):
@@ -162,12 +176,33 @@ class Demon(Character):
     def __init__(self, name):
         Character.__init__(self, name, self.role, self.role_type, self.max_hp, self.hp, self.cur_ac, self.ac, self.at_mod, self.dmg, self.is_alive, self.position, self.healthy_sprite, self.injured_sprite,)
 
-fighter = Fighter("Steve")
-mage = Mage("Gandalf")
-goblin = Goblin("Boggard")
-demon = Demon("Asmodeus")
+
+class RoleCharacterCount():
+    FIGHTER = 0
+    MAGE = 0
+    GOBLIN = 0
+    DEMON = 0
+
+def create_character(role_type, role):
+    match role_type:
+        case RoleType.PLAYER.value:
+            match role:
+                case PlayerRole.FIGHTER.value:
+                    RoleCharacterCount.FIGHTER = RoleCharacterCount.FIGHTER + 1
+                    CHARACTERS.append(Fighter(f"Steve {RoleCharacterCount.FIGHTER}"))
+                case PlayerRole.MAGE.value:
+                    RoleCharacterCount.MAGE = RoleCharacterCount.MAGE + 1
+                    CHARACTERS.append(Mage(f"Gandalf {RoleCharacterCount.MAGE}"))
+        case RoleType.ENEMY.value:
+            match role:
+                case EnemyRole.GOBLIN.value:
+                    RoleCharacterCount.GOBLIN = RoleCharacterCount.GOBLIN + 1
+                    CHARACTERS.append(Goblin(f"Boggard {RoleCharacterCount.GOBLIN}"))
+                case EnemyRole.DEMON.value:
+                    RoleCharacterCount.DEMON = RoleCharacterCount.DEMON + 1
+                    CHARACTERS.append(Demon(f"Asmodeus {RoleCharacterCount.DEMON}"))
+
 
 def get_initative_list():
-    characters = [fighter, goblin, demon, mage]
-    characters.sort(key=lambda x: x.initiative, reverse=True)
-    return characters
+    CHARACTERS.sort(key=lambda x: x.initiative, reverse=True)
+    return CHARACTERS
