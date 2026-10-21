@@ -63,7 +63,7 @@ def main(window: curses.window):
 
     while game_active:
         if current_page == Page.BREAK:
-            break
+            game_active = False
         current_page = PageManager.manage(window, current_page)
 
 
