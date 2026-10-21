@@ -40,7 +40,7 @@ class Character:
         self.injured_sprite = injured_sprite
 
     def attack(self, target):
-        hit = randint(1, 20) + (self.at_mod)
+        hit = random.randint(1, 20) + (self.at_mod)
         if hit >= (target.cur_ac):
             (target).hp = (target.hp) - (self.dmg)
         return hit

@@ -4,7 +4,42 @@ import curses
 import menu
 import combat_front
 import sys
+from enum import Enum
 
+
+class Page(Enum):
+    START = "start"
+    MENU = "menu"
+    COMBAT = "combat"
+    BREAK = "break"
+
+
+class PageManager:
+    def manage(window, current_page):
+        match current_page:
+            case Page.START:
+                menu.start(window)
+                current_page = PageManager.turn_page(window, current_page)
+            case Page.MENU:
+                menu.set_char_stat(window)
+                current_page = PageManager.turn_page(window, current_page)
+            case Page.COMBAT:
+                combat_front.fight_vis(window)
+                return Page.BREAK
+        return current_page
+
+    def turn_page(window, current_page):
+        key_press = window.get_wch()
+
+        if key_press == 'x':
+            current_page = Page.BREAK
+
+        match current_page:
+            case Page.START:
+                return Page.MENU
+            case Page.MENU:
+                return Page.COMBAT
+        return current_page
 
 def main(window: curses.window):
 
@@ -23,22 +58,18 @@ def main(window: curses.window):
     window.attrset(curses.color_pair(1))
     window.box()
 
-    while 1:  # Loop so the game doesn't exit instantly
-        menu.start(window)
-        c = window.get_wch()
-        if c == 'x':
-            break
-        elif c == ' ':
-            menu.set_char_stat(window)
-            c = window.get_wch()
+    game_active = True
+    current_page = Page.START
 
-        if c == 'c':
-            combat_front.fight_vis(window)
-            break
+    while game_active:
+        if current_page == Page.BREAK:
+            game_active = False
+        current_page = PageManager.manage(window, current_page)
+
 
 if __name__ == '__main__':
     try:
-        curses.wrapper(main)  # Initialise and return the window to main()
+        curses.wrapper(main)
     except KeyboardInterrupt:
         pass
     finally:
