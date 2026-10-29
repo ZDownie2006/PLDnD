@@ -125,11 +125,12 @@ class Fighter(Character, Char_Visual):
             ac=14,
             at_mod=3,
             dmg=6,
-            is_alive=True,
+            is_alive=True,)
+        Char_Visual.__init__(
+            self,
             position=(),
             healthy_sprite="😎",
             injured_sprite="🤕",)
-
 
 class Mage(Character, Char_Visual):
     def __init__(self, name):
@@ -144,10 +145,13 @@ class Mage(Character, Char_Visual):
             ac=12,
             at_mod=6,
             dmg=6,
-            is_alive=True,
+            is_alive=True,)
+        Char_Visual.__init__(
+            self,
             position=(),
             healthy_sprite="🔮",
-            injured_sprite="🤢",)
+            injured_sprite="🤢",
+        )
 
 
 class Goblin(Character, Char_Visual):
@@ -163,7 +167,9 @@ class Goblin(Character, Char_Visual):
             ac=14,
             at_mod=5,
             dmg=2,
-            is_alive=True,
+            is_alive=True,)
+        Char_Visual.__init__(
+            self,
             position=(),
             healthy_sprite="👺",
             injured_sprite="🐸",)
@@ -182,7 +188,9 @@ class Demon(Character, Char_Visual):
             ac=12,
             at_mod=4,
             dmg=4,
-            is_alive=True,
+            is_alive=True,)
+        Char_Visual.__init__(
+            self,
             position=(),
             healthy_sprite="😈",
             injured_sprite="👿",)

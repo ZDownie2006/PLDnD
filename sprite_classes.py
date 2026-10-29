@@ -5,6 +5,7 @@ import time
 import random
 import characters
 import combat_front
+from combat_back import Checks
 
 class Sprite:
     def __init__(self, window: curses.window, character, position):
@@ -43,7 +44,7 @@ class Sprite:
             self.state = self.character.healthy_sprite
         self.display_sprite()
 
-    def attack_visual(self, window: curses.window, attacker: characters.Characters, target: characters.Characters, player_list: list, enemy_list: list, sprite_dictionary: dict):
+    def attack_visual(self, window: curses.window, attacker: characters.Character, target: characters.Character, player_list: list, enemy_list: list, sprite_dictionary: dict):
         old_health = target.hp
         roll = attacker.attack(target)
         damage = old_health - target.hp
@@ -60,7 +61,7 @@ class Sprite:
         else:
             window.display_text("OW!", (sprite_dictionary[target].position[0] + 1, sprite_dictionary[target].position[1]))
     
-        if target.hp <= 0:
+        if Checks.hp_check(target):
             window.display_text("ARGHHH!", (sprite_dictionary[target].position[0] + 1, sprite_dictionary[target].position[1]), 1)
             sprite_dictionary[target].sprite_is_dead()
             combat_front.INITIATIVE_LIST.remove(target)
