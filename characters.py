@@ -23,7 +23,7 @@ class RoleType(Enum):
 
 
 class Character:
-    def __init__(self, name, role, role_type, max_hp, hp, cur_ac, ac, at_mod, dmg, is_alive, position, healthy_sprite, injured_sprite,):
+    def __init__(self, name, role, role_type, max_hp, hp, cur_ac, ac, at_mod, dmg, is_alive,):
         self.name = name
         self.role = role
         self.role_type = role_type
@@ -35,9 +35,6 @@ class Character:
         self.dmg = dmg
         self.initiative = random.randint(1, 20)
         self.is_alive = is_alive
-        self.position = position
-        self.healthy_sprite = healthy_sprite
-        self.injured_sprite = injured_sprite
 
     def attack(self, target):
         hit = random.randint(1, 20) + (self.at_mod)
@@ -50,7 +47,7 @@ class Character:
 
     def heal(current):
         if current.hp < current.max_hp:
-            heal = randint(1, 5)
+            heal = random.randint(1, ((current.max_hp) // 3))
             current.hp = current.hp + heal
         if current.hp > current.max_hp:
             current.hp = current.max_hp
@@ -108,8 +105,14 @@ class Character:
     def initiative(self, initiative: int) -> int:
         self.__initiative = initiative
 
+class Char_Visual:
+    def __init__(self, position, healthy_sprite, injured_sprite):
+        self.position = position
+        self.healthy_sprite = healthy_sprite
+        self.injured_sprite = injured_sprite
 
-class Fighter(Character):
+
+class Fighter(Character, Char_Visual):
     def __init__(self, name):
         Character.__init__(
             self,
@@ -122,13 +125,14 @@ class Fighter(Character):
             ac=14,
             at_mod=3,
             dmg=6,
-            is_alive=True,
+            is_alive=True,)
+        Char_Visual.__init__(
+            self,
             position=(),
             healthy_sprite="😎",
             injured_sprite="🤕",)
 
-
-class Mage(Character):
+class Mage(Character, Char_Visual):
     def __init__(self, name):
         Character.__init__(
             self,
@@ -141,13 +145,16 @@ class Mage(Character):
             ac=12,
             at_mod=6,
             dmg=6,
-            is_alive=True,
+            is_alive=True,)
+        Char_Visual.__init__(
+            self,
             position=(),
             healthy_sprite="🔮",
-            injured_sprite="🤢",)
+            injured_sprite="🤢",
+        )
 
 
-class Goblin(Character):
+class Goblin(Character, Char_Visual):
     def __init__(self, name):
         Character.__init__(
             self,
@@ -160,13 +167,15 @@ class Goblin(Character):
             ac=14,
             at_mod=5,
             dmg=2,
-            is_alive=True,
+            is_alive=True,)
+        Char_Visual.__init__(
+            self,
             position=(),
             healthy_sprite="👺",
             injured_sprite="🐸",)
 
 
-class Demon(Character):
+class Demon(Character, Char_Visual):
     def __init__(self, name):
         Character.__init__(
             self,
@@ -179,7 +188,9 @@ class Demon(Character):
             ac=12,
             at_mod=4,
             dmg=4,
-            is_alive=True,
+            is_alive=True,)
+        Char_Visual.__init__(
+            self,
             position=(),
             healthy_sprite="😈",
             injured_sprite="👿",)
