@@ -21,7 +21,7 @@ class PageManager:
                 menu.start(window)
                 current_page = PageManager.turn_page(window, current_page)
             case Page.MENU:
-                menu.set_char_stat(window)
+                menu.set_char_stat()
                 current_page = PageManager.turn_page(window, current_page)
             case Page.COMBAT:
                 combat_front.fight_vis(window)
