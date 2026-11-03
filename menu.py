@@ -1,6 +1,7 @@
 import curses
 import characters
 import random
+from display_classes import Display
 
 def start(window: curses.window):
 
@@ -29,9 +30,10 @@ def start(window: curses.window):
 
     start_menu.noutrefresh()
 
-def set_char_stat(window: curses.window):
+def set_char_stat():
 
-    window.clear()
+    character_stat_display = Display(height=curses.LINES, width=curses.COLS)
+    character_stat_window = character_stat_display.window
 
     char_table_contents = [
         ["Name", "Role", "Type", "HP", "AC", "ATK", "DMG", "Initative"],
@@ -56,11 +58,11 @@ def set_char_stat(window: curses.window):
     pos_mid = int(curses.COLS / 2)
     col_width = 12
     table_width = len(char_table_contents[0]) * col_width + 2
-    char_table = window.derwin(len(char_table_contents)+2, table_width , 9, pos_mid - int(table_width/2))
+    char_table = character_stat_window.derwin(len(char_table_contents)+2, table_width , 9, pos_mid - int(table_width/2))
     char_table.box()
 
     for i, line in enumerate(char_table_contents):
         for j, content in enumerate(line):
             char_table.addstr(i + 1, 2 + j * col_width, content)
 
-    char_table.noutrefresh()
+    character_stat_window.refresh()
