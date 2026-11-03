@@ -23,9 +23,9 @@ def start(window: curses.window):
 
     player_count = 2
     enemy_count = 2
-    for num in range(player_count):
+    for _ in range(player_count):
         characters.create_character(characters.RoleType.PLAYER.value, random.randint(1,2))
-    for num in range(enemy_count):
+    for _ in range(enemy_count):
         characters.create_character(characters.RoleType.ENEMY.value, random.randint(1,2))
 
     start_menu.noutrefresh()
