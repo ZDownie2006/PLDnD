@@ -34,7 +34,7 @@ class Display:
             self.window.addstr(sprite_dictionary[current_enemy].position[0], sprite_dictionary[current_enemy].position[1], sprite_dictionary[current_enemy].state, curses.color_pair(3))
             
             attack_string = f"Attack {current_enemy.name}"
-            self.window.addstr(curses.LINES - 10, int(curses.COLS * 0.5) - int(len(attack_string) * 0.5), attack_string, red)
+            self.window.addstr(self.height - 2, int(self.width * 0.5) - int(len(attack_string) * 0.5), attack_string, red)
 
             self.window.refresh()
 
@@ -46,7 +46,7 @@ class Display:
                     i += 1
 
             self.window.addstr(sprite_dictionary[current_enemy].position[0], sprite_dictionary[current_enemy].position[1], sprite_dictionary[current_enemy].state, curses.color_pair(1))
-            self.window.addstr(curses.LINES - 10, int(curses.COLS * 0.5) - int(len(attack_string) * 0.5), " " * len(attack_string))
+            self.window.addstr(self.height - 2, int(self.width * 0.5) - int(len(attack_string) * 0.5), " " * len(attack_string))
 
         self.window.refresh()
         return current_enemy

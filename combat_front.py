@@ -3,17 +3,17 @@
 import curses
 import time
 import characters
-import combat_back
+from combat_back import Checks
 import random
 import display_classes
 import sprite_classes
-from sound_effects import battle_music, victory_music
+#from sound_effects import battle_music, victory_music
 
 INITIATIVE_LIST = characters.get_initative_list()
 
 def fight_vis(window: curses.window):
     try:
-        background_music = battle_music()
+  #      background_music = battle_music()
         curses.init_pair(2, curses.COLOR_RED, -1)
         curses.init_pair(3, -1, curses.COLOR_RED)
         curses.init_pair(4, curses.COLOR_BLUE, -1)
@@ -32,7 +32,7 @@ def fight_vis(window: curses.window):
         sprite_dictionary = {}
         
         # Create Player Sprites
-        player_list = combat_back.player_list(INITIATIVE_LIST)
+        player_list = Checks.player_list(INITIATIVE_LIST)
         party_size = len(player_list)
         x_coordinate = int(curses.COLS * 0.25)
         for index, player in enumerate(player_list):
@@ -40,7 +40,7 @@ def fight_vis(window: curses.window):
             sprite_dictionary[player] = sprite_classes.Sprite(combat_window.window, player, (y_coordinate, x_coordinate))
 
         # Create Enemy Sprites
-        enemy_list = combat_back.enemy_list(INITIATIVE_LIST)
+        enemy_list = Checks.enemy_list(INITIATIVE_LIST)
         party_size = len(enemy_list)
         x_coordinate = int(curses.COLS * 0.75)
         for index, enemy in enumerate(enemy_list):
@@ -48,8 +48,8 @@ def fight_vis(window: curses.window):
             sprite_dictionary[enemy] = sprite_classes.Sprite(combat_window.window, enemy, (y_coordinate, x_coordinate))
 
         while (enemy_list and player_list):
-            if not background_music.is_alive():
-                background_music = battle_music()
+      #      if not background_music.is_alive():
+      #          background_music = battle_music()
 
             combat_window.window.refresh()
             options_window.window.refresh()
@@ -82,19 +82,19 @@ def fight_vis(window: curses.window):
                 case 3:
                     active_sprite.heal_visual(combat_window, active_character, sprite_dictionary)
                 case 0:
-                    background_music.stop()
+ #                   background_music.stop()
                     return
                 
             active_sprite.is_active(False)
             INITIATIVE_LIST.append(active_character)
 
-        background_music.stop()
-        endgame_music = victory_music()
+  #      background_music.stop()
+     #   endgame_music = victory_music()
         win_string = f"YOUR PARTY WINS!" if player_list else "GAME OVER"
         window.addstr(int(curses.LINES * 0.4), int((curses.COLS - len(win_string)) * 0.5), win_string)
         window.addstr(int(curses.LINES * 0.5), int(curses.COLS * 0.5) - 10, "Press any key to exit")
         window.get_wch()
-        endgame_music.stop()
+    #    endgame_music.stop()
     except Exception:
         print("Unknown Error: Game closing!")
-        background_music.stop()
+   #     background_music.stop()
