@@ -57,13 +57,29 @@ class Actions(Display):
         self.width = width
         self.coordinates = coordinates
         self.window = curses.newwin(self.height, self.width, self.coordinates[0], self.coordinates[1])
-        self.add_actions()
+        self.buttons = self.add_actions()
+        
 
     def add_actions(self):
-        self.window.addstr(int(self.height * 0.5), int(curses.COLS * 0.20)-4, "ATTACK 🗡️")
-        self.window.addstr(int(self.height * 0.5), int(curses.COLS * 0.40)-4, "DODGE 💨")
-        self.window.addstr(int(self.height * 0.5), int(curses.COLS * 0.60)-3, "HEAL 💊")
-        self.window.addstr(int(self.height * 0.5), int(curses.COLS * 0.80)-3, "QUIT 😰")
+        action_strings = ["ATTACK 👊", "DODGE 💨", "HEAL 💊", "QUIT 😰"]
+        action_buttons = []
+
+        horizontal_placement_ratio = 0.20
+        vertical_center_of_actions_display = int(self.height * 0.5)
+
+
+        for string in action_strings:
+            half_of_string_length = int(len(string) * 0.5)
+            x_coordinate = int(curses.COLS * horizontal_placement_ratio) - half_of_string_length
+
+            new_button = Button(string, (vertical_center_of_actions_display, x_coordinate))
+            action_buttons.append(new_button)
+            self.window.addstr(new_button.coordinates[0], new_button.coordinates[1], new_button.string)
+            horizontal_placement_ratio += 0.20
+            
+        self.window.refresh()
+        return action_buttons
+
 
     def display_turn(self, name):
         self.create_border()
@@ -71,27 +87,19 @@ class Actions(Display):
         self.window.addstr(0, int((curses.COLS - len(turn_string)) * 0.5), turn_string)
         self.window.refresh()
 
+
     def select_action(self):
         self.window.keypad(True)
         key_press = ""
-        i = 1
+        i = 0
         self.window.refresh()
 
         while key_press not in (curses.KEY_ENTER, 10, 13):
-            centres = [0.80, 0.20, 0.40, 0.60]
-            centre = centres[abs(i) % 4]
-            height = int(curses.LINES * 0.275)
-
-            # Make a box
-            blue = curses.color_pair(4)
-            self.window.addstr(int(height * 0.5) - 2, int(curses.COLS * centre - 5), "-----------", blue)
-            self.window.addstr(int(height * 0.5) - 1, int(curses.COLS * centre) + 5, "⎪", blue)
-            self.window.addstr(int(height * 0.5) - 1, int(curses.COLS * centre) - 5, "⎪", blue)
-            self.window.addstr(int(height * 0.5), int(curses.COLS * centre) - 5, "-----------", blue)
-
+            current_index = i % len(self.buttons)
+            self.buttons[current_index].button_selected(self.window, True)
             self.window.refresh()
-    
             key_press = self.window.getch()
+
             match (key_press):
                 case curses.KEY_LEFT:
                     i -= 1
@@ -99,12 +107,28 @@ class Actions(Display):
                     i += 1
     
             if i <= -1:
-                i = 4
-    
-            self.window.addstr(int(height * 0.5) - 2, int(curses.COLS * centre) - 5, "           ")
-            self.window.addstr(int(height * 0.5) - 1, int(curses.COLS * centre) + 5, " ")
-            self.window.addstr(int(height * 0.5) - 1, int(curses.COLS * centre) - 5, " ")
-            self.window.addstr(int(height * 0.5), int(curses.COLS * centre) - 5, "           ")
-    
+                i = 3
+
+            self.buttons[current_index].button_selected(self.window, False)
+        
         self.window.refresh()
-        return i % 4
+        return current_index
+
+class Button:
+    def __init__(self, string, coordinates):
+        self.string = string
+        self.width = len(self.string) + 2
+        self.height = 3
+        self.coordinates = coordinates
+        self.standard_text = curses.color_pair(1)
+        self.highlighted_text = curses.color_pair(6)
+
+    def button_selected(self, window, selected):
+        if selected:
+            window.addstr(self.coordinates[0], self.coordinates[1], self.string, self.highlighted_text)
+        else:
+            window.addstr(self.coordinates[0], self.coordinates[1], self.string, self.standard_text)
+
+        
+
+
