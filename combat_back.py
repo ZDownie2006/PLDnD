@@ -12,7 +12,7 @@ class Checks:
                 initiative_list[idx].is_alive
             ) == True:
                 plist.append(initiative_list[idx])
-            elif (initiative_list[idx].role_type) == "Enemy":
+            else:
                 continue
         return plist
 
@@ -25,14 +25,11 @@ class Checks:
                 initiative_list[idx].is_alive
             ) == True:
                 elist.append(initiative_list[idx])
-            elif (initiative_list[idx].role_type) == "Player":
+            else:
                 continue
 
         return elist
 
 
     def hp_check(target) -> bool:
-        if target.hp <= 0:
-            return True
-        else:
-            return False
+        return (target.hp <= 0)
