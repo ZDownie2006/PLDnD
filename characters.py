@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import random
+import dice
 from enum import Enum
 
 
@@ -33,11 +33,11 @@ class Character:
         self.ac = ac
         self.at_mod = at_mod
         self.dmg = dmg
-        self.initiative = random.randint(1, 20)
+        self.initiative = dice.D20.roll()
         self.is_alive = is_alive
 
     def attack(self, target):
-        hit = random.randint(1, 20) + (self.at_mod)
+        hit = dice.D20.roll() + (self.at_mod)
         if hit >= (target.cur_ac):
             (target).hp = (target.hp) - (self.dmg)
         return hit
@@ -48,7 +48,7 @@ class Character:
     def heal(current):
         if current.hp < current.max_hp:
             heal = random.randint(1, ((current.max_hp) // 3))
-            current.hp = min((current.hp + heal), current.max_hp)
+            current.hp = min((current.hp + heal), current.max_hp)          
 
     def __str__(self):
         print(self.name)
