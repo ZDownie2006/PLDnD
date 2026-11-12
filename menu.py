@@ -3,10 +3,12 @@ import characters
 import random
 from display_classes import Display
 
-def start(window: curses.window):
+
+def start():
 
     pos_mid = int(curses.COLS / 2)
-    start_menu = window.derwin(curses.LINES, curses.COLS, 0, 0)
+    start_menu_display = Display(height=curses.LINES, width=curses.COLS)
+    start_menu_window = start_menu_display.window
 
     castle = [
             " _   |~  _ ",
@@ -19,49 +21,47 @@ def start(window: curses.window):
             ]
 
     for i, line in enumerate(castle):
-        start_menu.addstr(i + 1, pos_mid - int(len(line)/2) , line)
+        start_menu_window.addstr(i + 1, pos_mid - int(len(line)/2) , line)
 
-    player_amount_request = "Select Amount of Players (Max 4)"
-    start_menu.addstr(i + 5, pos_mid - int(len(player_amount_request)/2), player_amount_request)
+    player_count_message = ["Please use arrow keys to select player count (Max 4)", "Press enter to confirm"]
+
+    for j, line in enumerate(player_count_message):
+        start_menu_window.addstr(len(castle) + j + 3, pos_mid - int(len(line)/2) , line)
 
     key_press = ""
     player_count = 1
     enemy_count = 2
 
-    start_menu.addstr(i + 7, pos_mid + 3, ">")
+    start_menu_window.addstr(i + 7, pos_mid + 3, ">")
 
     while key_press not in (curses.KEY_ENTER, 10, 13):
-        start_menu.addstr(i + 7, pos_mid, str(player_count))
+        start_menu_window.addstr(i + 7, pos_mid, str(player_count))
         if player_count > 1 and player_count < 4:
-            start_menu.addstr(i + 7, pos_mid - 3, "<")
-            start_menu.addstr(i + 7, pos_mid + 3, ">")
+            start_menu_window.addstr(i + 7, pos_mid - 3, "<")
+            start_menu_window.addstr(i + 7, pos_mid + 3, ">")
         elif player_count == 1:
-            start_menu.addstr(i + 7, pos_mid - 3, " ")
+            start_menu_window.addstr(i + 7, pos_mid - 3, " ")
         elif player_count == 4:
-            start_menu.addstr(i + 7, pos_mid + 3, " ")
+            start_menu_window.addstr(i + 7, pos_mid + 3, " ")
 
-        start_menu.refresh()
-        key_press = start_menu.getch()
+        start_menu_window.refresh()
+        key_press = start_menu_window.getch()
 
         match (key_press):
             case 68:
                 if player_count > 1:
                     player_count -= 1
-                    start_menu.addstr(i + 7, pos_mid - 3, "<")
+                    start_menu_window.addstr(i + 7, pos_mid - 3, "<")
             case 67:
                 if player_count < 4:
                     player_count += 1
-                    start_menu.addstr(i + 7, pos_mid + 3, ">")
+                    start_menu_window.addstr(i + 7, pos_mid + 3, ">")
 
     for _ in range(player_count):
         characters.create_character(characters.RoleType.PLAYER.value, random.randint(1,2))
     for _ in range(enemy_count):
         characters.create_character(characters.RoleType.ENEMY.value, random.randint(1,2))
 
-    next_page_message = "Press Key to View Character Stats"
-    start_menu.addstr(i + 10, pos_mid - len(next_page_message)//2, "Press Key to View Character Stats")
-
-    start_menu.noutrefresh()
 
 def set_char_stat():
 
@@ -99,3 +99,4 @@ def set_char_stat():
             char_table.addstr(i + 1, 2 + j * col_width, content)
 
     character_stat_window.refresh()
+    character_stat_window.getch()

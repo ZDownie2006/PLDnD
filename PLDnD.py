@@ -18,7 +18,7 @@ class PageManager:
     def manage(window, current_page):
         match current_page:
             case Page.START:
-                menu.start(window)
+                menu.start()
                 current_page = PageManager.turn_page(window, current_page)
             case Page.MENU:
                 menu.set_char_stat()
@@ -29,11 +29,6 @@ class PageManager:
         return current_page
 
     def turn_page(window, current_page):
-        key_press = window.get_wch()
-
-        if key_press == 'x':
-            current_page = Page.BREAK
-
         match current_page:
             case Page.START:
                 return Page.MENU
@@ -41,9 +36,8 @@ class PageManager:
                 return Page.COMBAT
         return current_page
 
-def main(window: curses.window):
 
-    window.keypad(True)
+def set_default_display():
     curses.noecho()
     curses.curs_set(0)
     curses.cbreak()
@@ -54,9 +48,10 @@ def main(window: curses.window):
 
     curses.init_pair(1, curses.COLOR_WHITE, -1)
 
-    window = curses.newwin(curses.LINES, curses.COLS, 0, 0)
-    window.attrset(curses.color_pair(1))
-    window.box()
+
+def main(window: curses.window):
+
+    set_default_display()
 
     game_active = True
     current_page = Page.START
@@ -65,7 +60,6 @@ def main(window: curses.window):
         if current_page == Page.BREAK:
             game_active = False
         current_page = PageManager.manage(window, current_page)
-
 
 if __name__ == '__main__':
     try:
