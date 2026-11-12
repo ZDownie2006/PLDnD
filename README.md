@@ -2,9 +2,19 @@
 
 ## What is PLDnD?
 
-PLDnD is a TUI (Terminal-User Interface) based around the common aspects if Dungeon and Dragons  
+PLDnD is a TUI (Terminal-User Interface) based around the common aspects of Dungeon and Dragons
 
 Using Python and it's module `Curses`, creating a turn based combat game.
+
+### Authors/Creators
+* Munya Murare
+* DziRare
+
+* Zac Downie
+* Zdownie2006 / Zdownie336
+
+* Yasmin So
+* MissYasminSo / MissYasminSoHolberton
 
 ### Dependencies
 
@@ -12,3 +22,8 @@ Using Python and it's module `Curses`, creating a turn based combat game.
 * Python Module `Playsound3`
 * Pyhton Module `Curses`
 
+### Usage
+* Practising OOP
+* fun project to present skills learnt at Holberton School
+
+> [!NOTE] Will be updating later for more clarification
