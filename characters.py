@@ -49,7 +49,7 @@ class Character:
     def heal(current):
         if current.hp < current.max_hp:
             heal = random.randint(1, ((current.max_hp) // 3))
-            current.hp = min((current.hp + heal), current.max_hp)          
+            current.hp = min((current.hp + heal), current.max_hp)
 
     def __str__(self):
         print(self.name)
