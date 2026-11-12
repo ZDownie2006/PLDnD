@@ -2,6 +2,7 @@
 
 import dice
 from enum import Enum
+import random
 
 
 CHARACTERS = []
@@ -43,7 +44,7 @@ class Character:
         return hit
 
     def dodge(current):
-        current.cur_ac = (current.ac) + 5
+        current.cur_ac = (current.ac) + ((current.ac) // 2)
 
     def heal(current):
         if current.hp < current.max_hp:
@@ -199,24 +200,36 @@ class RoleCharacterCount():
     DEMON = 0
 
 
+class Names:
+    def player_name():
+        names = ["Steve", "Gandalf", "Joe", "Jonathan", "Chris"]
+        return (random.choice(names))
+
+    def enemy_name():
+        names = ["Boggard", "Asmodeus", "Lut", "Lucifer", "Gricko"]
+        return (random.choice(names))
+
+
+
+
 def create_character(role_type, role):
     match role_type:
         case RoleType.PLAYER.value:
             match role:
                 case PlayerRole.FIGHTER.value:
                     RoleCharacterCount.FIGHTER = RoleCharacterCount.FIGHTER + 1
-                    CHARACTERS.append(Fighter(f"Steve {RoleCharacterCount.FIGHTER}"))
+                    CHARACTERS.append(Fighter(f"{Names.player_name()} {RoleCharacterCount.FIGHTER}"))
                 case PlayerRole.MAGE.value:
                     RoleCharacterCount.MAGE = RoleCharacterCount.MAGE + 1
-                    CHARACTERS.append(Mage(f"Gandalf {RoleCharacterCount.MAGE}"))
+                    CHARACTERS.append(Mage(f"{Names.player_name()} {RoleCharacterCount.MAGE}"))
         case RoleType.ENEMY.value:
             match role:
                 case EnemyRole.GOBLIN.value:
                     RoleCharacterCount.GOBLIN = RoleCharacterCount.GOBLIN + 1
-                    CHARACTERS.append(Goblin(f"Boggard {RoleCharacterCount.GOBLIN}"))
+                    CHARACTERS.append(Goblin(f"{Names.enemy_name()} {RoleCharacterCount.GOBLIN}"))
                 case EnemyRole.DEMON.value:
                     RoleCharacterCount.DEMON = RoleCharacterCount.DEMON + 1
-                    CHARACTERS.append(Demon(f"Asmodeus {RoleCharacterCount.DEMON}"))
+                    CHARACTERS.append(Demon(f"{Names.enemy_name()} {RoleCharacterCount.DEMON}"))
 
 
 def get_initative_list():
