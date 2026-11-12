@@ -2,7 +2,7 @@
 
 ## What is PLDnD?
 
-PLDnD is a TUI (Terminal-User Interface) based around the common aspects if Dungeon and Dragons
+PLDnD is a TUI (Terminal-User Interface) based around the common aspects of Dungeon and Dragons
 
 Using Python and it's module `Curses`, creating a turn based combat game.
 
