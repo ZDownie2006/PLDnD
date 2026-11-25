@@ -83,14 +83,12 @@ class Sprite:
     def heal_visual(self, window: curses.window, player, sprite_dictionary):
         centre = (window.size[0] - 2, int(window.size[1] * 0.5))
         old_health = player.hp
+        half_health = player.max_hp // 2
         player.heal()
         window.display_text("HEALING UP!", (sprite_dictionary[player].position[0] + 1, sprite_dictionary[player].position[1]))
         healed = player.hp - old_health
         window.display_text(f"{player.name} heals for {healed} hp!", centre, 1)
-        if old_health < player.max_hp // 2 and player.hp > player.max_hp // 2:
-            if player.role_type == "Enemy":
-                self.update_state()
-            else:
-                self.update_state()
+        if old_health <= half_health and player.hp > half_health:
+            self.update_state()
             window.display_text("COOL AS A CUCUMBER!", (sprite_dictionary[player].position[0] + 1, sprite_dictionary[player].position[1]))
 
