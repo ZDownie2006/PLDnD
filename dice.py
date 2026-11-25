@@ -13,4 +13,7 @@ class Dice():
         return random.randint(self.min_range, self.max_range)
 
 D20 = Dice(20)
+D10 = Dice(10)
+D8 = Dice(8)
 D6 = Dice(6)
+D4 = Dice(4)
