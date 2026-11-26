@@ -8,13 +8,13 @@ Using Python and it's module `Curses`, creating a turn based combat game.
 
 ### Authors/Creators
 * Munya Murare
-* DziRare
+DziRare
 
 * Zac Downie
-* Zdownie2006 / Zdownie336
+Zdownie2006 / Zdownie336
 
 * Yasmin So
-* MissYasminSo / MissYasminSoHolberton
+MissYasminSo / MissYasminSoHolberton
 
 ### Dependencies
 
