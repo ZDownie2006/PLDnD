@@ -7,13 +7,13 @@ PLDnD is a TUI (Terminal-User Interface) based around the common aspects of Dung
 Using Python and it's module `Curses`, creating a turn based combat game.
 
 ### Authors/Creators
-* Munya Murare
+* Munya Murare:
 DziRare
 
-* Zac Downie
+* Zac Downie:
 Zdownie2006 / Zdownie336
 
-* Yasmin So
+* Yasmin So:
 MissYasminSo / MissYasminSoHolberton
 
 ### Dependencies
@@ -25,5 +25,3 @@ MissYasminSo / MissYasminSoHolberton
 ### Usage
 * Practising OOP
 * fun project to present skills learnt at Holberton School
-
-> [!NOTE] Will be updating later for more clarification
