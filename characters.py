@@ -24,7 +24,7 @@ class RoleType(Enum):
 
 
 class Character:
-    def __init__(self, name, role, role_type, max_hp, hp, cur_ac, ac, at_mod, dmg, is_alive,):
+    def __init__(self, name, role, role_type, max_hp, hp, cur_ac, ac, at_mod, dmg, dmg_dice, is_alive,):
         self.name = name
         self.role = role
         self.role_type = role_type
@@ -34,14 +34,18 @@ class Character:
         self.ac = ac
         self.at_mod = at_mod
         self.dmg = dmg
+        self.dmg_dice = dmg_dice
         self.initiative = dice.D20.roll()
         self.is_alive = is_alive
 
     def attack(self, target):
         hit = dice.D20.roll() + (self.at_mod)
         if hit >= (target.cur_ac):
-            (target).hp = (target.hp) - (self.dmg)
+            self.damage(target)
         return hit
+
+    def damage(self, target):
+        (target).hp = (target.hp) - (self.dmg.roll())
 
     def dodge(current):
         current.cur_ac = (current.ac) + ((current.ac) // 2)
@@ -121,7 +125,8 @@ class Fighter(Character, Char_Visual):
             cur_ac=14,
             ac=14,
             at_mod=3,
-            dmg=6,
+            dmg=dice.D8,
+            dmg_dice="D8",
             is_alive=True,)
         Char_Visual.__init__(
             self,
@@ -141,7 +146,8 @@ class Mage(Character, Char_Visual):
             cur_ac=12,
             ac=12,
             at_mod=6,
-            dmg=6,
+            dmg=dice.D6,
+            dmg_dice="D6",
             is_alive=True,)
         Char_Visual.__init__(
             self,
@@ -162,8 +168,9 @@ class Goblin(Character, Char_Visual):
             hp=12,
             cur_ac=14,
             ac=14,
-            at_mod=5,
-            dmg=2,
+            at_mod=6,
+            dmg=dice.D4,
+            dmg_dice="D4",
             is_alive=True,)
         Char_Visual.__init__(
             self,
@@ -184,7 +191,8 @@ class Demon(Character, Char_Visual):
             cur_ac=12,
             ac=12,
             at_mod=4,
-            dmg=4,
+            dmg=dice.D6,
+            dm_dice="D6",
             is_alive=True,)
         Char_Visual.__init__(
             self,

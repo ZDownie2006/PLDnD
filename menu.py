@@ -83,7 +83,7 @@ def set_char_stat():
             f"{character.hp}",
             f"{character.ac}",
             f"+{character.at_mod}",
-            f"{character.dmg}",
+            f"{character.dmg_dice}",
             f"{character.initiative}"
         ]
         char_table_contents.append(character_stat)
