@@ -34,53 +34,7 @@ class Character:
     def __str__(self):
         print(self.name)
 
-    @property
-    def name(self) -> str:
-        return self.__name
 
-    @name.setter
-    def name(self, name: str) -> str:
-        self.__name = name
-
-    @property
-    def role(self) -> str:
-        return self.__role
-
-    @role.setter
-    def role(self, role: str) -> str:
-        self.__role = role
-
-    @property
-    def role_type(self) -> str:
-        return self.__role_type
-
-    @role_type.setter
-    def role_type(self, role_type: str) -> str:
-        self.__role_type = role_type
-
-    @property
-    def at_mod(self) -> int:
-        return self.__at_mod
-
-    @at_mod.setter
-    def at_mod(self, at_mod: int) -> int:
-        self.__at_mod = at_mod
-
-    @property
-    def dmg(self) -> int:
-        return self.__dmg
-
-    @dmg.setter
-    def dmg(self, dmg: int) -> int:
-        self.__dmg = dmg
-
-    @property
-    def initiative(self) -> int:
-        return self.__initiative
-
-    @initiative.setter
-    def initiative(self, initiative: int) -> int:
-        self.__initiative = initiative
 
 """Class to declare and initialise the visual aspects of the characters"""
 class Char_Visual:
@@ -88,6 +42,8 @@ class Char_Visual:
         self.position = position
         self.healthy_sprite = healthy_sprite
         self.injured_sprite = injured_sprite
+
+
 """Class Stats and combat information"""
 class Char_Stats:
     def __init__(self, max_hp, hp, cur_ac, ac, at_mod, dmg, dmg_dice):
@@ -116,6 +72,8 @@ class Char_Stats:
             heal = random.randint(1, ((current.max_hp) // 3))
             current.hp = min((current.hp + heal), current.max_hp)
 
+
+"""Class initialisation"""
 class Fighter(Character, Char_Visual, Char_Stats):
     def __init__(self, name):
         Character.__init__(
