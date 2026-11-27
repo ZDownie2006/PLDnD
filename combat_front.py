@@ -22,7 +22,7 @@ def fight_vis(window: curses.window):
     combat_window = display_classes.Display(int(curses.LINES * 0.75), curses.COLS, (0, 0))
     combat_window.create_border()
 
-    options_window = display_classes.Actions(int(curses.LINES * 0.20), curses.COLS, (int(curses.LINES * 0.80), 0))
+    options_window = display_classes.Actions(int(curses.LINES * 0.25), curses.COLS, (int(curses.LINES * 0.75), 0))
     options_window.create_border()
 
     # combat_window.window.refresh()
