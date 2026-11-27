@@ -2,6 +2,7 @@ import curses
 import characters
 import random
 
+PAD_BUFFER = 100
 
 def select_player_count(start_menu_pad, i):
 
@@ -44,7 +45,7 @@ def select_player_count(start_menu_pad, i):
 def start():
 
     pos_mid = int(curses.COLS / 2)
-    start_menu_pad = curses.newpad(curses.LINES + 100, curses.COLS + 100)
+    start_menu_pad = curses.newpad(curses.LINES + PAD_BUFFER, curses.COLS + PAD_BUFFER)
 
     castle = [
             " _   |~  _ ",
@@ -68,7 +69,7 @@ def start():
 def set_char_stat():
 
     curses.curs_set(0)
-    character_stat_pad = curses.newpad(curses.LINES + 100, curses.COLS + 100)
+    character_stat_pad = curses.newpad(curses.LINES + PAD_BUFFER, curses.COLS + PAD_BUFFER)
 
     char_table_contents = [
         ["Name", "Role", "Type", "HP", "AC", "ATK", "DMG", "Initative"],
