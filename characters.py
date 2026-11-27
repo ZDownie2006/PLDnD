@@ -192,7 +192,7 @@ class Demon(Character, Char_Visual):
             ac=12,
             at_mod=4,
             dmg=dice.D6,
-            dm_dice="D6",
+            dmg_dice="D6",
             is_alive=True,)
         Char_Visual.__init__(
             self,
