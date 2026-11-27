@@ -3,29 +3,9 @@ import characters
 import random
 
 
-def start():
+def select_player_count(start_menu_pad, i):
 
     pos_mid = int(curses.COLS / 2)
-    start_menu_pad = curses.newpad(curses.LINES + 100, curses.COLS + 100)
-
-    castle = [
-            " _   |~  _ ",
-            "[_]--'--[_]",
-            "|'|  `  |'|",
-            "| | /^\\ | |",
-            "|_|_|_|_|_|",
-            "",
-            "Welcome to PLDnD!!!",
-            ]
-
-    for i, line in enumerate(castle):
-        start_menu_pad.addstr(i + 1, pos_mid - int(len(line)/2) , line)
-
-    player_count_message = ["Please use arrow keys to select player count (Max 4)", "Press enter to confirm"]
-
-    for j, line in enumerate(player_count_message):
-        start_menu_pad.addstr(len(castle) + j + 3, pos_mid - int(len(line)/2) , line)
-
     key_press = ""
     player_count = 1
     enemy_count = 2
@@ -60,6 +40,30 @@ def start():
     for _ in range(enemy_count):
         characters.create_character(characters.RoleType.ENEMY.value, random.randint(1,2))
 
+
+def start():
+
+    pos_mid = int(curses.COLS / 2)
+    start_menu_pad = curses.newpad(curses.LINES + 100, curses.COLS + 100)
+
+    castle = [
+            " _   |~  _ ",
+            "[_]--'--[_]",
+            "|'|  `  |'|",
+            "| | /^\\ | |",
+            "|_|_|_|_|_|",
+            "",
+            "Welcome to PLDnD!!!",
+            ]
+
+    for i, line in enumerate(castle):
+        start_menu_pad.addstr(i + 1, pos_mid - int(len(line)/2) , line)
+
+    player_count_message = ["Please use arrow keys to select player count (Max 4)", "Press enter to confirm"]
+    for j, line in enumerate(player_count_message):
+        start_menu_pad.addstr(len(castle) + j + 3, pos_mid - int(len(line)/2) , line)
+
+    select_player_count(start_menu_pad, i)
 
 def set_char_stat():
 
